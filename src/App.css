@@ -77,7 +77,7 @@ li {
   width: 100%;
   height: 7.5rem;
   outline: 5px solid #408080;
-  background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("img/pattern-black.PNG");
+  background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("assets/pattern-black.PNG");
   background-size: 70px;
   background-position: center;
   @media only screen and (max-width: 981px) {
