@@ -84,6 +84,7 @@ function App() {
     } else if (current === "equipe") {
       return (
         <div id="equipeContent" className="middle">
+          <Equipe/>
           {/* {equipe.map((categoria) => {
             return(
               <div className="categoriaEquipe" key={categoria.title}>
