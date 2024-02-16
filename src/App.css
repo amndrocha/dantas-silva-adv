@@ -1,0 +1,497 @@
+* {
+  margin: 0;
+}
+
+
+@font-face {
+  font-family: "Garamond";
+  src: url("https://fonts.google.com/specimen/EB+Garamond");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  color: #4d4d4d;
+  text-align: justify;
+}
+
+
+html {
+  position: relative;
+  height: 100%;
+  font-size: 20px;
+  overflow: hidden;
+}
+
+body {
+  background-color: #e5e4e4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+b {
+  color: rgb(255, 255, 255, 0.4);
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  @media only screen and (max-width: 720px) {
+      font-size: 18px;
+  }
+}
+
+h1 {
+  color: #2d5c5c;
+  @media only screen and (max-width: 720px) {
+      font-size: 30px;
+  }
+}
+
+h2 {
+  @media only screen and (max-width: 720px) {
+      font-size: 25px;
+  }
+}
+
+h3 {
+  @media only screen and (max-width: 720px) {
+      font-size: 20px;
+  }
+}
+
+li {
+  margin: 3px;
+  list-style-type: none;    
+  @media only screen and (max-width: 981px) {
+      margin: 10px;   
+  }
+}
+
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+
+.decoBox {
+  position: absolute;
+  width: 100%;
+  height: 7.5rem;
+  outline: 5px solid #408080;
+  background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("img/pattern-black.PNG");
+  background-size: 70px;
+  background-position: center;
+  @media only screen and (max-width: 981px) {
+      display: none;        
+  }
+}
+
+#horizontalGallery {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.doubleSpread {
+  width: 50vw;
+  height: auto;
+  object-fit: cover;
+}
+
+.singleSpread {
+  width: 100vw;
+  height: auto;
+  object-fit: cover;
+}
+
+.navegation {
+  position: absolute;
+  top: 5rem;
+  width: 80%;
+  margin: 0 10vw;
+  background-color: #408080;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 5rem;
+  box-shadow: 0 15px 20px rgb(0, 0, 0, 0.2);
+  @media only screen and (max-width: 981px) {
+      top: 0;
+      margin: 0;
+      height: 4rem;
+      width: 100%;
+  }
+  @media only screen and (max-width: 720px) {
+      justify-content: space-between;
+  }
+}
+
+#normalNav {
+  top: 0;
+  margin: 0;
+  height: 4rem;
+  width: 100%;
+}
+
+.navLink {
+  color: #e5e4e4;
+  text-decoration: none;
+  margin: 0 20px;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+#logo {
+  margin-top: 8px;
+  height: 2.5rem;
+  cursor: pointer;
+  @media only screen and (max-width: 720px) {
+      margin-left: 30px;       
+  }
+}
+
+.divider {
+  color: #e5e4e4;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#horizontalNav{
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  align-items: center;
+  @media only screen and (max-width: 720px) {
+      display: none;        
+  }
+}
+
+
+#menuLink {
+  display: none;
+  @media only screen and (max-width: 720px) {
+      display: flex;        
+  }
+}
+
+
+.middle {
+  overflow-y: scroll;
+  position: absolute;
+  width: 100%;
+  top: 10rem;
+  bottom: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (max-width: 981px) {
+      top: 4rem;
+  }
+}
+
+
+#foot {
+  position: absolute;
+  height: 5rem;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(64, 128, 128);
+  color: #e5e4e4; 
+  box-shadow: 0 -15px 20px rgb(0, 0, 0, 0.2);
+}
+
+#foot p {
+  color: #e5e4e4;
+}
+
+#copyright {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 5px;
+  font-size: 12px;
+  margin-top: 10px;
+  color: rgb(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+#address {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.addressItem {
+  color: #e5e4e4;
+  margin: 0 0.5rem;
+}
+
+#r {
+  display: none;
+}
+
+
+.indexImageBox {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+#indexImages {
+  height: 100%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 1rem 0;
+  @media only screen and (max-width: 981px) {
+      width: 100%;
+  }
+}
+
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+.mobileMenu {
+  background-color: #408080;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.verticalNav{
+  font-size: 6vh;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding:  0 15px 50px 0;
+  gap: 3vh;
+}
+
+#returnBtn {
+  padding: 20px;
+}
+
+/* Areas de atuacao */
+
+#areasContent {
+  gap: 20px;
+  padding: 20px 0;
+  @media only screen and (max-width: 720px) {
+      justify-content: flex-start;
+  }
+}
+
+#areasRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  height: 100%;
+  @media only screen and (max-width: 720px) {
+      flex-direction: column;
+      height: fit-content;
+  }
+}
+
+.areasColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  outline: 3px solid #408080;
+  width: 210px;
+  height: 100%;
+  @media only screen and (max-width: 720px) {
+      width: 50vw;
+  }
+}
+
+.areasImageBox {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  @media only screen and (max-width: 720px) {
+      height: 200px;
+  }
+}
+
+#areasImageBoxDesktop {
+  @media only screen and (max-width: 720px) {
+      display: none;      
+  }
+}
+
+#areasImageBoxMobile {
+  @media only screen and (min-width: 720px) {
+      display: none;        
+  }
+}
+
+/* Escritorio */
+
+#escritorioContent {
+  padding: 10px 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+#textBox {
+  display: block;
+  margin: 0 20%;
+  margin-bottom: 30px;
+}
+
+#floatImage {
+  float: left;
+  margin-right: 20px;
+  width: 40%;
+}
+
+.colorLight {
+  color: #e5e4e4;
+}
+
+.colorDark {
+  color: #0A3200;
+}
+
+
+/* Equipe */
+
+#normalNav {
+  top: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#equipeContent {
+  padding: 30px 0;
+  gap: 20px;
+  justify-content: start;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.categoriaEquipe {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.membroEquipe {
+  max-width: 720px;
+  width: 100%;
+  outline: 3px solid #408080;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  border-radius: 100px;
+  @media only screen and (max-width: 720px) {
+      max-width: 90vw;
+      padding: 10px;
+      gap: 10px;
+  }
+}
+
+.membroInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.equipeImage {
+  width: 100px;
+  border-radius: 100px;
+}
+
+.name {
+  color: #0A3200;;
+}
+
+
+::-webkit-scrollbar {
+width: 5px;
+}
+
+
+::-webkit-scrollbar-track {
+background: #f1f1f1; 
+}
+
+
+::-webkit-scrollbar-thumb {
+background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555; 
+}
+
+
+/* Noticias */
+#noticiasContent {
+  padding: 60px 0;
+  gap: 60px;
+  justify-content: start;
+  align-items: center;
+}
+
+.post {
+  width: 70%;
+  outline: 3px solid #408080;
+  padding: 20px;
+}
+
+.postInfo {
+  margin-bottom: 20px;
+}
+
+.postTitle {
+  width: 100%;
+  border-bottom: 1px solid grey;
+}
+
+.paragraph {
+  color: #0A3200;
+  margin-bottom: 10px;
+}
+
+.sign {
+  width: 100%;
+  text-align: end;
+  margin-top: 10px;
+  color: #408080;
+  font-weight: 800;
+}
+
+.postBox {
+  display: block;
+  overflow-x: clip;
+}
+
+.postImgBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
