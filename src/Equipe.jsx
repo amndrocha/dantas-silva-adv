@@ -236,22 +236,34 @@ function Equipe() {
       alert('Dados incluídos com sucesso.');
     }
   };
-  
-  const changePosition = async (memberId, direction) => {
-    // Find the member by ID
-    const member = equipe.find(member => member.id === memberId);
-    if (!member) {
-        console.error('Member not found');
-        return;
-    }
 
+  const isMovingAllowed = (member, direction) => {
     // Find other members in the same category
     const sameCategoryMembers = equipe.filter(m => m.category === member.category);
     // Sort members by order property
     sameCategoryMembers.sort((a, b) => a.order - b.order);
 
     // Find the index of the current member in the sorted list
-    const currentIndex = sameCategoryMembers.findIndex(m => m.id === memberId);
+    const currentIndex = sameCategoryMembers.findIndex(m => m.id === member.id);
+
+    if (direction === 'increase') {
+        // Check if it's already at the last position or if the next member is from a different category
+        return !(currentIndex === sameCategoryMembers.length - 1 || sameCategoryMembers[currentIndex].order + 1 !== sameCategoryMembers[currentIndex + 1].order);
+    } else if (direction === 'decrease') {
+        // Check if it's already at the first position or if the previous member is from a different category
+        return !(currentIndex === 0 || sameCategoryMembers[currentIndex].order - 1 !== sameCategoryMembers[currentIndex - 1].order);
+    }
+};
+
+  const changePosition = async (member, direction) => {
+    // Find the member by ID
+    // Find other members in the same category
+    const sameCategoryMembers = equipe.filter(m => m.category === member.category);
+    // Sort members by order property
+    sameCategoryMembers.sort((a, b) => a.order - b.order);
+
+    // Find the index of the current member in the sorted list
+    const currentIndex = sameCategoryMembers.findIndex(m => m.id === member.id);
 
     let newOrder;
     if (direction === 'increase') {
@@ -291,11 +303,24 @@ function Equipe() {
                 .update({ order: m.order })
                 .eq('id', m.id);
         }));
-        console.log('Order property updated successfully');
+
+        // Update the equipe state with the new order
+        setEquipe(prevEquipe => {
+            // Update only the members in the same category
+            return prevEquipe.map(member => {
+                const updatedMember = updatedMembers.find(m => m.id === member.id);
+                return updatedMember ? updatedMember : member;
+            });
+        });
+
+        alert('Posição alterada com sucesso. Recarregue a página para ver a mudança.');
+        location.reload();
     } catch (error) {
         console.error('Error updating order property:', error.message);
     }
 };
+
+
 
 
 
@@ -340,7 +365,7 @@ function Equipe() {
             <label for="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
             <label for="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
             <label for="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
-            <label for="contact" className={current.action === 'add' ? 'visible' :  'none'}>Foto:
+            <label for="contact">Foto:
             <input id="image" type="text" placeholder="Inserir URL da foto"
             onChange={(e) => setCurrent({...current, image: e.target.value})}value={current.image}/></label>
           </form>
@@ -386,10 +411,12 @@ function Equipe() {
                       <button className={authorized ? 'adminBtn' : 'none'} id="editBtn"
                       onClick={() => clickedEdit(member)}>Editar</button>
                       <div>
-                        <button className={authorized ? 'adminBtn' : 'none'} id="arrowBtnUp"
-                        onClick={() => changePosition(member.id, 'decrease')}>Up</button>
-                        <button className={authorized ? 'adminBtn' : 'none'} id="arrowBtnDown"
-                        onClick={() => changePosition(member.id, 'increase')}>Down</button>                      
+                        <button className={authorized ? 'adminBtn' : 'none'} 
+                        id="arrowBtnUp" disabled={!isMovingAllowed(member, "decrease")}
+                        onClick={() => changePosition(member, 'decrease')}>Up</button>
+                        <button className={authorized ? 'adminBtn' : 'none'} 
+                        id="arrowBtnDown" disabled={!isMovingAllowed(member, "increase")}
+                        onClick={() => changePosition(member, 'increase')}>Down</button>                      
                       </div>
 
                     </div>

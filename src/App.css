@@ -603,6 +603,7 @@ label {
 .adminBtn:disabled {
   background-color: #67676793;
   color: #0A3200;
+  cursor: default;
 }
 
 #deleteBtn {

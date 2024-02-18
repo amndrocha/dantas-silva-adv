@@ -27,7 +27,9 @@ function App() {
       return(
         <div style={{overflow: "hidden"}} className="middle">
             <div id="indexImages">
-                <div className="indexImageBox" style={{backgroundImage: "url('img/sketch1.png')"}}></div>
+                <div className="indexImageBox" style={{backgroundImage: "url('img/sketch1.png')"}}>
+                  <button></button>
+                </div>
                 <div className="indexImageBox" style={{backgroundImage: "url('img/sketch2.png')"}}></div>
                 <div className="indexImageBox" style={{backgroundImage: "url('img/sketch3.png')"}}></div>
             </div>
