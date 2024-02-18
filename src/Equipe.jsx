@@ -177,6 +177,7 @@ function Equipe() {
           category: current.category,
           name: current.name,
           job: current.job,
+          image: current.image,
         })
         .eq('id', current.id);
   
@@ -344,11 +345,11 @@ function Equipe() {
           <br/>
           Essa ação é irreversível.
           <div className="buttonWrapper">
-            <button  className='adminBtn'
-            onClick={() => clickedEdit(current)}>Voltar</button>
-            <button  className='adminBtn'
-            onClick={() => deleteMember(current.id)}
-            disabled={isProcessing}>{isProcessing ? 'Removendo..' : 'Tenho certeza'}</button>              
+            <button onClick={() => clickedEdit(current)}
+            className='adminBtn'>Voltar</button>
+            <button  className='adminBtn' onClick={() => deleteMember(current.id)}
+            disabled={isProcessing}>{isProcessing ? 'Removendo..' : 'Tenho certeza'}
+            </button>              
           </div>
       
         </div>

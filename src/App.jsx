@@ -9,26 +9,55 @@ const supabase = createClient("https://mtwcuvbgdswoatjnupgb.supabase.co", key);
 
 function App() {
 
-  const [categories, setCategories] = useState([]);
+  const [current, setCurrent] = useState('home');
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [imgData, setImgData] = useState({
+    width: '',
+    height: '',
+    url: '',
+    id: '',
+  }); 
+  const [isProcessing, setIsProcessing] = useState(false); 
 
-  useEffect(() => {
-    getCategories();
-  }, []);
 
-  async function getCategories() {
-    const { data } = await supabase.from("categories").select();
-    setCategories(data);
+  const openModal = (id) => {
+    let element = document.getElementById(id);
+    setImgData({...imgData, width: element.offsetWidth});
+    setImgData({...imgData, height: element.offsetHeight});
+    setImgData({...imgData, id: id});
+    setIsModalOpen(true);
   }
 
-  const [current, setCurrent] = useState('home');
+  const closeModal = () => {
+    setImgData({
+    width: '',
+    height: '',
+    url: '',
+    id: '',
+    }); 
+    setIsModalOpen(false);
+  }
+
+  const alterElement = () => {
+    console.log(imgData);
+    let element = document.getElementById(imgData.id);
+    element.backgroundImage = 'URL('+imgData.url+')';
+    console.log(element.backgroundImage);
+    element.width = imgData.width;
+    element.height = imgData.height;
+    closeModal();
+  }
 
   function Content() {
     if (current === "home") {
-      return(
+      return(        
         <div style={{overflow: "hidden"}} className="middle">
             <div id="indexImages">
-                <div className="indexImageBox" style={{backgroundImage: "url('img/sketch1.png')"}}>
-                  <button></button>
+                <div className="indexImageBox" id="indexImageBox1"
+                style={{backgroundImage: "url('img/sketch1.png')"}}>
+                  <button onClick={() => openModal("indexImageBox1")}
+                  style={{margin: '10px'}}
+                  className='adminBtn'>Alterar</button>
                 </div>
                 <div className="indexImageBox" style={{backgroundImage: "url('img/sketch2.png')"}}></div>
                 <div className="indexImageBox" style={{backgroundImage: "url('img/sketch3.png')"}}></div>
@@ -85,10 +114,6 @@ function App() {
             </div>
           </div>
         )
-    } else if (current === "equipe") {
-      return (
-        <Equipe/>
-      )
     } else if (current === "login") {
       return (
         <div className="middle">
@@ -106,54 +131,60 @@ function App() {
         <div></div>
       )
     }
-  }
-
-  const changePosition = (id, increase) => {
-    
-    const index = equipe.findIndex(member => member.id === id);
-    // Make a copy of the equipe array to avoid mutating state directly
-    const updatedEquipe = [...equipe];
-    
-    // Remove the member from the array at the "fromIndex" position
-    const [removedMember] = updatedEquipe.splice(fromIndex, 1);
-    
-    // Insert the removed member at the "toIndex" position
-    updatedEquipe.splice(toIndex, 0, removedMember);
-  
-    // Update the state with the reordered equipe array
-    setEquipe(updatedEquipe);
-  };
-  
+  }  
 
   return (
     <div className="App">
-        <div style={{backgroundColor: "blue", height: "fit-content"}}>
-            <div id="altDecoBox" className="decoBox"></div>
-            <div className="navegation">
-                <img id="logo" src="img\logo.png" onClick={() => setCurrent('home')}/>
-                <img id="menuLink" href="menu.html" className="navLink" src="img\menu.svg"/>
-                <div id="horizontalNav">
-                    <a className="navLink" onClick={() => setCurrent('escritorio')}>Escritório</a>
-                    <div className="divider">⏐</div>
-                    <a className="navLink" onClick={() => setCurrent('equipe')}>Equipe</a>
-                    <div className="divider">⏐</div>
-                    <a className="navLink"  onClick={() => setCurrent('areas')}>Atuação</a>
-                    <div className="divider">⏐</div>
-                    <a className="navLink" onClick={() => setCurrent('noticias')}>Notícias</a>
-                    <div className="divider">⏐</div>
-                    <a className="navLink" onClick={() => setCurrent('login')}>Acesso</a>
-                </div>
-            </div>
-        </div>
-        <Content/>
-        <div id="foot">
-            <div id="address">
-                <div className="addressItem">Rua da Quitanda, 60, 12º andar</div>
-                <div className="addressItem">Rio de Janeiro/RJ, Brasil - CEP 20011-030</div>
-            </div>
-            <p style={{textAlign: "center"}}>+55 (21) 3078-3363 - advogados@dantassilva.com.br </p>
-        </div>
-        <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
+      <div style={{backgroundColor: "blue", height: "fit-content"}}>
+          <div id="altDecoBox" className="decoBox"></div>
+          <div className="navegation">
+              <img id="logo" src="img\logo.png" onClick={() => setCurrent('home')}/>
+              <img id="menuLink" href="menu.html" className="navLink" src="img\menu.svg"/>
+              <div id="horizontalNav">
+                  <a className="navLink" onClick={() => setCurrent('escritorio')}>Escritório</a>
+                  <div className="divider">⏐</div>
+                  <a className="navLink" onClick={() => setCurrent('equipe')}>Equipe</a>
+                  <div className="divider">⏐</div>
+                  <a className="navLink"  onClick={() => setCurrent('areas')}>Atuação</a>
+                  <div className="divider">⏐</div>
+                  <a className="navLink" onClick={() => setCurrent('noticias')}>Notícias</a>
+                  <div className="divider">⏐</div>
+                  <a className="navLink" onClick={() => setCurrent('login')}>Acesso</a>
+              </div>
+          </div>
+      </div>
+      <Equipe/>
+      <div id="hide" className={current === 'equipe' ? 'none' : 'middle'}></div>
+      <Content/>      
+      <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
+        <div className={isModalOpen ? 'modal' : 'none'}>
+          <div className="modalBox">
+          <form className="editMemberForm">
+              <label for="contact">URL da foto:
+              <input id="image" type="text"
+              onChange={(e) => setImgData({...imgData, url: e.target.value})} value={imgData.url}/></label>
+
+              <label for="contact">Medidas:
+              <input id="image" type="number"
+              onChange={(e) => setImgData({...imgData, width: e.target.value})} value={imgData.width}/></label>
+            </form>
+            <div className="buttonWrapper">
+              <button onClick={closeModal}
+              className='adminBtn'>Voltar</button>
+              <button  className='adminBtn' onClick={() => alterElement()} 
+              disabled={isProcessing}>{isProcessing ? 'Salvando..' : 'Salvar alterações'}
+              </button>              
+            </div>      
+          </div>
+      </div>
+      <div id="foot">
+          <div id="address">
+              <div className="addressItem">Rua da Quitanda, 60, 12º andar</div>
+              <div className="addressItem">Rio de Janeiro/RJ, Brasil - CEP 20011-030</div>
+          </div>
+          <p style={{textAlign: "center"}}>+55 (21) 3078-3363 - advogados@dantassilva.com.br </p>
+      </div>
+
     </div>
   );
 }

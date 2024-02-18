@@ -238,8 +238,14 @@ li {
   display: none;
 }
 
+#alterImgBtn {
+  margin: 10px;
+}
 
 .indexImageBox {
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
   width: 100%;
   height: 100%;
   background-size: cover;
@@ -656,4 +662,8 @@ label {
   color: #2d5c5c;
   font-size: 25px;
   font-weight: 500;
+}
+
+#hide {
+  background-color: #e5e4e4;
 }
