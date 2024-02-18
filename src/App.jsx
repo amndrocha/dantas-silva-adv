@@ -106,6 +106,23 @@ function App() {
     }
   }
 
+  const changePosition = (id, increase) => {
+    
+    const index = equipe.findIndex(member => member.id === id);
+    // Make a copy of the equipe array to avoid mutating state directly
+    const updatedEquipe = [...equipe];
+    
+    // Remove the member from the array at the "fromIndex" position
+    const [removedMember] = updatedEquipe.splice(fromIndex, 1);
+    
+    // Insert the removed member at the "toIndex" position
+    updatedEquipe.splice(toIndex, 0, removedMember);
+  
+    // Update the state with the reordered equipe array
+    setEquipe(updatedEquipe);
+  };
+  
+
   return (
     <div className="App">
         <div style={{backgroundColor: "blue", height: "fit-content"}}>
