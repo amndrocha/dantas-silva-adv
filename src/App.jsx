@@ -3,12 +3,12 @@ import { createClient } from "@supabase/supabase-js";
 import Equipe from "./Equipe";
 import './App.css';
 import Login from "./Login";
-import Account from "./Account";
 
 const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2N1dmJnZHN3b2F0am51cGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgwNDExOTYsImV4cCI6MjAyMzYxNzE5Nn0.dt8qknmzhpUN38Cp3WIJpJo17AxEcjIQCKOYWTciKjM";
 const supabase = createClient("https://mtwcuvbgdswoatjnupgb.supabase.co", key);
 
 function App() {
+
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -85,39 +85,13 @@ function App() {
         )
     } else if (current === "equipe") {
       return (
-        <div id="equipeContent" className="middle">
-          <Equipe/>
-          {/* {equipe.map((categoria) => {
-            return(
-              <div className="categoriaEquipe" key={categoria.title}>
-                <h1 className="title">{categoria.title}</h1>
-                {categoria.members.map(member => {
-                  return(
-                    <div className="membroEquipe">
-                      <img className="equipeImage" src={member.picture}/>
-                      <div className="membroInfo">
-                        <h2 className="name">{member.name}</h2>
-                        <h3 className="job">{member.job}</h3>
-                        <p className="contact">{member.contact}</p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )            
-          })}
-          <ul>
-            {categoria.map((categoria) => (
-              <li key={categoria.title}>{categoria.title}</li>
-            ))}
-          </ul> */}
-        </div>
+        <Equipe/>
       )
     } else if (current === "login") {
       return (
         <div className="middle">
           <Login/>
-          <button onClick={() => setCurrent('cadastro')}>Criar conta</button>
+          <button onClick={() => localStorage.clear()}>Limpar</button>
         </div>
       )
     } else if (current === "cadastro") {
@@ -148,7 +122,7 @@ function App() {
                     <div className="divider">⏐</div>
                     <a className="navLink" onClick={() => setCurrent('noticias')}>Notícias</a>
                     <div className="divider">⏐</div>
-                    <a className="navLink" onClick={() => setCurrent('login')}>Login</a>
+                    <a className="navLink" onClick={() => setCurrent('login')}>Acesso</a>
                 </div>
             </div>
         </div>

@@ -63,6 +63,11 @@ export default function Account({ session }) {
     setLoading(false)
   }
 
+  const handleSignOut = () => {
+    supabase.auth.signOut();
+    localStorage.clear();
+  }
+
   return (
     <form onSubmit={updateProfile} className="form-widget">
       <div>
@@ -96,7 +101,7 @@ export default function Account({ session }) {
       </div>
 
       <div>
-        <button className="button block" type="button" onClick={() => supabase.auth.signOut()}>
+        <button className="button block" type="button" onClick={handleSignOut}>
           Sign Out
         </button>
       </div>

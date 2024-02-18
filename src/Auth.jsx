@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { supabase } from './supabaseClient'
 
 export default function Auth() {
+
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
 
@@ -9,13 +10,23 @@ export default function Auth() {
     event.preventDefault()
 
     setLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({ email })
+    const { data, error } = await supabase.auth.signInWithOtp({
+        email: email,
+        options: {
+        // set this to false if you do not want the user to be automatically signed up
+        shouldCreateUser: true,
+        emailRedirectTo: 'http://localhost:5174/dantas-silva-adv/',
+        },
+    })
 
     if (error) {
       alert(error.error_description || error.message)
     } else {
       alert('Check your email for the login link!')
     }
+
+    localStorage.setItem('email', email);
+
     setLoading(false)
   }
 

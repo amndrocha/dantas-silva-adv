@@ -412,6 +412,21 @@ li {
   }
 }
 
+.membroEquipeWrapper {
+  max-width: 720px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-radius: 100px;
+  @media only screen and (max-width: 720px) {
+      max-width: 90vw;
+      padding: 10px;
+      gap: 10px;
+  }
+}
+
 .membroInfo {
   display: flex;
   flex-direction: column;
@@ -494,4 +509,51 @@ background: #555;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modalBox {
+  background-color: white;
+  width: 100px;
+  height: 100px;
+}
+
+.none {
+  display: none;
+}
+
+.adminBtn {
+  font-size: 12px;
+  height: fit-content;
+  width: fit-content;
+  padding: 3px 5px;
+  background-color: #408080;
+  color: white;
+  border: 1px solid #0A3200;
+  border-radius: 10px;
+}
+
+.adminBtn:hover {
+  background-color: #2d5c5c;
+}
+
+.adminBtn:disabled {
+  background-color: #0A3200;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }

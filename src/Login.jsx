@@ -5,14 +5,8 @@ import Auth from './Auth'
 import Account from './Account'
 
 function Login() {
-  const [session, setSession] = useState(
-    JSON.parse(localStorage.getItem('session')) || null
-  );
-
-  useEffect(() => {
-    localStorage.setItem('session', JSON.stringify(session));
-  }, [session]);
-
+  const [session, setSession] = useState(null);
+  
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
