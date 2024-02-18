@@ -55,6 +55,7 @@ function Equipe() {
       name: '',
       contact: '',
       job: '',
+      image: '',
       action: '',
     });
   }
@@ -66,49 +67,86 @@ function Equipe() {
       name: member.name,
       contact: member.contact,
       job: member.job,
+      image: member.image,
       action: 'edit',
     });
   }
 
-  const [isRemoving, setIsRemoving] = useState(false);
+  const clickedRemove = () => {
+    setCurrent({
+      id: current.id,
+      category: current.category,
+      name: current.name,
+      contact: current.contact,
+      job: current.job,
+      image: current.image,
+      action: 'remove',
+    });
+  }
 
-  const removeRow = async (idToRemove) => {
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const removeRow = async () => {
     try {
       setIsRemoving(true);
       const { data, error } = await supabase
         .from("equipe")
         .delete()
-        .eq('id', idToRemove);
+        .eq('id', current.id);
   
       if (error) {
         console.error('Error removing row:', error.message);
       } else {
         console.log('Row removed successfully:', data);
-        setEquipe(prevEquipe => prevEquipe.filter(member => member.id !== idToRemove));
+        setEquipe(prevEquipe => prevEquipe.filter(member => member.id !== current.id));
       }
     } catch (error) {
       console.error('Error removing row:', error.message);
     } finally {
       setIsRemoving(false);
-      alert('Dados removidos com sucesso')
+      closeModal();
+      alert('Dados removidos com sucesso.');
     }
   };
 
-  const modifyRow = async (idToUpdate, newData) => {
+  const modifyRow = async () => {
     try {
+      setIsSaving(true);
       const { data, error } = await supabase
         .from('equipe')
-        .update(newData)
-        .eq('id', idToUpdate);
+        .update({
+          category: current.category,
+          name: current.name,
+          job: current.job,
+        })
+        .eq('id', current.id);
   
       if (error) {
         console.error('Error modifying row:', error.message);
       } else {
         console.log('Row modified successfully:', data);
-        // Optionally, you can perform additional actions after the row is modified
+        setEquipe(equipe.map(member => {
+          if (member.id !== current.id) {
+            return member;
+          } else {
+            return {            
+              id: current.id,
+              category: current.category,
+              name: current.name,
+              job: current.job,
+              contact: current.contact,
+              image: current.image,
+            }
+          }
+        }));
       }
     } catch (error) {
       console.error('Error modifying row:', error.message);
+    } finally {
+      setIsSaving(false);
+      closeModal();
+      alert('Alterações salvas com sucesso.');
     }
   };
 
@@ -116,8 +154,44 @@ function Equipe() {
 
   return (
     <div id="equipeContent" className="middle">
-      <div className={current.action === '' ? 'none' : 'modal'} onClick={closeModal}>
-        <div className="modalBox">{current.action} {current.id}</div>
+      <div className={current.action === 'remove' ? 'modal' : 'none'}>
+        <div className="modalBox">
+          Tem certeza que deseja remover {current.name} do banco de dados?
+          <br/>
+          Essa ação é irreversível.
+          <div className="buttonWrapper">
+            <button  className='adminBtn'
+            onClick={() => edit(current)}
+            disabled={isRemoving}>Voltar</button>
+            <button  className='adminBtn'
+            onClick={() => removeRow(current.id)}
+            disabled={isRemoving}>{isRemoving ? 'Removendo..' : 'Tenho certeza'}</button>              
+          </div>
+      
+        </div>
+
+      </div>
+      <div className={current.action === 'edit' ? 'modal' : 'none'}>
+        <div className="modalBox">
+          <div className="closeBtn">
+            <div style={{opacity: 0}}>X</div>
+            <button onClick={() => clickedRemove()}
+            className='adminBtn'>Remover</button>
+            <div style={{cursor: 'pointer'}} onClick={closeModal}>X</div>
+          </div>
+
+          <form className="editMemberForm">
+            <label for="name">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
+            <label for="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
+            <label for="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
+            <label for="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
+          </form>
+          <button className="adminBtn"
+          disabled={isRemoving}
+          onClick={modifyRow}>
+            {isSaving ? 'Salvando..' : 'Salvar alterações'}
+          </button>      
+        </div>        
       </div>
       <button className={authorized ? 'adminBtn' : 'none'}>add</button>
       {lista.map((category) => {
@@ -127,27 +201,14 @@ function Equipe() {
           {category.members.map((member) => {
             return(
               <div className="membroEquipeWrapper">
-                <button  className={authorized ? 'adminBtn' : 'none'}
-                onClick={() => removeRow(member.id)}
-                disabled={isRemoving}>Remover {member.name}</button>
+                <button className={authorized ? 'adminBtn' : 'none'}
+                onClick={() => edit(member)}>Editar</button>
                 <div className="membroEquipe" key={member.id}>
-                  <img className="equipeImage"/>
+                  <img className="equipeImage" src={member.image === '' ? 'img/blank.png' : member.image}/>
                   <div className="membroInfo">
-                    <div className="buttonWrapper">
-                      <h2 className="name">{member.name}</h2>
-                      <button className={authorized ? 'adminBtn' : 'none'}
-                      onClick={() => edit(member)}>Editar</button>
-                    </div>
-                    <div className="buttonWrapper">
-                      <h3 className="job">{member.job}</h3>
-                      <button className={authorized ? 'adminBtn' : 'none'}
-                      onClick={() => edit(member)}>Editar</button>
-                    </div>
-                    <div className="buttonWrapper">
-                      <p className="contact">{member.contact}</p>
-                      <button className={authorized ? 'adminBtn' : 'none'}
-                      onClick={() => edit(member)}>Editar</button>
-                    </div>
+                    <h2 className="name">{member.name}</h2>
+                    <h3 className="job">{member.job}</h3>
+                    <p className="contact">{member.contact}</p>
                   </div>
                 </div>
               </div>

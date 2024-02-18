@@ -525,8 +525,34 @@ background: #555;
 
 .modalBox {
   background-color: white;
-  width: 100px;
-  height: 100px;
+  width: fit-content;
+  max-width: 300px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  text-align: center;
+  gap: 20px;
+}
+
+.editMemberForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.closeBtn {
+  display: flex;
+  justify-content: space-between;
+  font-family: Arial;
+  width: 100%;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
 }
 
 .none {
@@ -542,6 +568,7 @@ background: #555;
   color: white;
   border: 1px solid #0A3200;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .adminBtn:hover {
@@ -549,7 +576,7 @@ background: #555;
 }
 
 .adminBtn:disabled {
-  background-color: #0A3200;
+  background-color: #2d5c5c93;
 }
 
 .buttonWrapper {
