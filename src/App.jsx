@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import Equipe from "./Equipe";
 import './App.css';
 import Login from "./Login";
-
-const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2N1dmJnZHN3b2F0am51cGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgwNDExOTYsImV4cCI6MjAyMzYxNzE5Nn0.dt8qknmzhpUN38Cp3WIJpJo17AxEcjIQCKOYWTciKjM";
-const supabase = createClient("https://mtwcuvbgdswoatjnupgb.supabase.co", key);
-
-
+import { supabase } from './supabaseClient';
 
 function App() {
 
@@ -30,7 +25,7 @@ function App() {
 
   const getUrl = (id) => {
     const image = images.find(img => img.id === id);
-    return image ? image.url : null;
+    return image ? image.url : '';
   };
 
 
@@ -41,9 +36,6 @@ function App() {
 
 
   const openModal = (id) => {
-    console.log(images);
-    console.log(id);
-    console.log(getUrl(id));
     let element = document.getElementById(id);
     let url = '';
     if (element.nodeName === 'IMG') {
@@ -91,10 +83,17 @@ function App() {
 
   const getPreviousUrl = () => {
     const image = images.find(img => img.id === currentImage.id);
-    setCurrentImage({
-      ...currentImage,
-      url: image.previous,
-    });
+    if (image !== '') {
+      setCurrentImage({
+        ...currentImage,
+        url: image.previous,
+      });
+    } else {
+      setCurrentImage({
+        ...currentImage,
+        url: '',
+      });
+    }
   };
 
   function Content() {
@@ -107,21 +106,21 @@ function App() {
                 style={{backgroundImage: "url("+getUrl("indexImageBox1")+")"}}>
                   <button onClick={() => openModal("indexImageBox1")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>Alterar</button>
+                  className='adminBtn'>{getUrl('indexImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
                 <div className="indexImageBox" id="indexImageBox2"
                 style={{backgroundImage: "url("+getUrl("indexImageBox2")+")"}}>
                   <button onClick={() => openModal("indexImageBox2")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>Alterar</button>
+                  className='adminBtn'>{getUrl('indexImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
                 <div className="indexImageBox" id="indexImageBox3"
                 style={{backgroundImage: "url("+getUrl("indexImageBox3")+")"}}>
                   <button onClick={() => openModal("indexImageBox3")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>Alterar</button>
+                  className='adminBtn'>{getUrl('indexImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
             </div>
@@ -136,7 +135,7 @@ function App() {
                     <div id="areasImageBox1" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox1")+")"}}>
                       <button onClick={() => openModal("areasImageBox1")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>Alterar</button>
+                      className='adminBtn'>{getUrl('areasImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
                         <li>Seguro e Capitalização</li><hr/>
@@ -157,14 +156,14 @@ function App() {
                     <div id="areasImageBox2" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox2")+")"}}>
                       <button onClick={() => openModal("areasImageBox2")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>Alterar</button>
+                      className='adminBtn'>{getUrl('areasImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                 </div>
                 <div className="areasColumn">
                     <div id="areasImageBox3" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox3")+")"}}>
                       <button onClick={() => openModal("areasImageBox3")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>Alterar</button>
+                      className='adminBtn'>{getUrl('areasImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
                         <li>Empresarial</li><hr/>
@@ -195,14 +194,14 @@ function App() {
           <button onClick={() => localStorage.clear()}>Limpar</button>
         </div>
       )
-    } else if (current === "cadastro") {
+    } else if (current === "noticias") {
       return (
         <div className="middle">
         </div>
       )
-    } {
+    } else {
       return (
-        <div></div>
+        <div className="middle"></div>
       )
     }
   }  
@@ -227,35 +226,40 @@ function App() {
               </div>
           </div>
       </div>
+
       <Equipe/>
       <div id="hide" className={current === 'equipe' ? 'none' : 'middle'}></div>
-      <Content/>      
-      <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
-        <div className={isModalOpen ? 'modal' : 'none'}>
-          <div className="modalBox">
-            <form className="editMemberForm">
-              <label htmlFor="contact">URL da foto:
-              <input id="image" type="text" onChange={(e) => setCurrentImage({...currentImage, url: e.target.value})}
-              value={currentImage.url}/></label>
-          </form>
 
-            <div className="buttonWrapper">
-              <button onClick={closeModal}
-              className='adminBtn'>Voltar</button>
-              <button  className='adminBtn' onClick={getPreviousUrl}>Resetar</button> 
-              <button  className='adminBtn' onClick={changeImage}
-              disabled={isProcessing}>{isProcessing ? 'Salvando..' : 'Salvar alterações'}
-              </button>              
-            </div>      
-          </div>
+      <Content/>
+      
+      <div className={isModalOpen ? 'modal' : 'none'}>
+        <div className="modalBox">
+          <form className="editMemberForm">
+            <label htmlFor="contact">URL da foto:
+            <input id="image" type="text" onChange={(e) => setCurrentImage({...currentImage, url: e.target.value})}
+            value={currentImage.url}/></label>
+        </form>
+
+          <div className="buttonWrapper">
+            <button onClick={closeModal}
+            className='adminBtn'>Voltar</button>
+            <button  className='adminBtn' onClick={getPreviousUrl}>Resetar</button> 
+            <button  className='adminBtn' onClick={changeImage}
+            disabled={isProcessing}>{isProcessing ? 'Salvando..' : 'Salvar alterações'}
+            </button>              
+          </div>      
+        </div>
       </div>
-      <div id="foot">
+
+      <div id="footer">
           <div id="address">
               <div className="addressItem">Rua da Quitanda, 60, 12º andar</div>
               <div className="addressItem">Rio de Janeiro/RJ, Brasil - CEP 20011-030</div>
           </div>
-          <p style={{textAlign: "center"}}>+55 (21) 3078-3363 - advogados@dantassilva.com.br </p>
+          <p className="addressItem" style={{textAlign: "center"}}>+55 (21) 3078-3363 - advogados@dantassilva.com.br </p>
       </div>
+
+      <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
       
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
 
