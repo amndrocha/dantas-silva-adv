@@ -3,13 +3,19 @@ import { supabase } from './supabaseClient';
 //import './App.css';
 
 function Equipe() {
+  const [equipe, setEquipe] = useState([]);
+  async function getEquipe() {
+    const { data } = await supabase.from("equipe").select();
+    setEquipe(data.sort((a, b) => a.order - b.order));
+  }
+
+  useEffect(() => {
+    getEquipe();
+  }, []);
 
   const email = localStorage.getItem('email');
   const authorized = email == 'amndrocha@gmail.com';
-  // console.log('email: '+email);
-  // console.log('authorized: '+authorized);
 
-  const [equipe, setEquipe] = useState([]);
   const [current, setCurrent] = useState({
     id: '',
     category: '',
@@ -17,62 +23,52 @@ function Equipe() {
     contact: '',
     job: '',
     action: '',
+    image: '',
   });
 
   const reorderEquipe = async () => {
-    // Step 1: Group members by category
-    const groupedEquipe = {
+    let categories = ['Sócio', 'Jurídico', 'Administrativo'];
+    let groupedEquipe = {
         'Sócio': [],
         'Jurídico': [],
-        'Administrativo': []
+        'Administrativo': [],
+        'Others': [],
     };
 
     equipe.forEach(member => {
+      if (categories.includes(member.category)) {
         groupedEquipe[member.category].push(member);
+      } else {
+        groupedEquipe['Others'].push(member);
+      }
     });
 
-    // Step 2: Sort members within each category by name
-    // for (const category in groupedEquipe) {
-    //     groupedEquipe[category].sort((a, b) => a.name.localeCompare(b.name));
-    // }
-
-    // Step 3: Combine sorted members back into a single array
     const reorderedEquipe = [
         ...groupedEquipe['Sócio'],
         ...groupedEquipe['Jurídico'],
-        ...groupedEquipe['Administrativo']
+        ...groupedEquipe['Administrativo'],
+        ...groupedEquipe['Others']
     ];
 
-    // Update the order field based on the new index
     reorderedEquipe.forEach(async (member, index) => {
         member.order = index;
-        // Update the database with the new order
         try {
-            await supabase
-                .from('equipe')
-                .update({ order: index })
-                .eq('id', member.id);
-            console.log('Database updated successfully'); // Log statement for successful update
+          const { data, error } = await supabase
+            .from('equipe')
+            .update({ order: index })
+            .eq('id', member.id);
+    
+          if (error) {
+            console.error('Error reordering equipe:', error.message);
+          } else {
+            getEquipe();
+            console.log('Equipe member successfully: '+data);
+          }
         } catch (error) {
-            console.error('Error updating member order:', error.message);
+          console.error('Error updating member order:', error.message);
         }
     });
-
-    // Update the state with the reordered equipe array
-    setEquipe(reorderedEquipe);
-};
-
-  
-  
-
-  useEffect(() => {
-    getEquipe();
-  }, []);
-
-  async function getEquipe() {
-    const { data } = await supabase.from("equipe").select();
-    setEquipe(data.sort((a, b) => a.order - b.order));
-  }
+  }; 
 
   let categories = [];
 
@@ -82,7 +78,6 @@ function Equipe() {
     }
   })
 
-  let reordered = false;
   let lista = categories.map((category) => {
     return ({title: category, members: []})
   })
@@ -157,7 +152,7 @@ function Equipe() {
         console.error('Error removing row:', error.message);
       } else {
         console.log('Row deleted successfully:', data);
-        setEquipe(prevEquipe => prevEquipe.filter(member => member.id !== current.id));
+        getEquipe();
       }
     } catch (error) {
       console.error('Error removing row:', error.message);
@@ -184,21 +179,8 @@ function Equipe() {
       if (error) {
         console.error('Error modifying row:', error.message);
       } else {
+        getEquipe();
         console.log('Row modified successfully:', data);
-        setEquipe(equipe.map(member => {
-          if (member.id !== current.id) {
-            return member;
-          } else {
-            return {            
-              id: current.id,
-              category: current.category,
-              name: current.name,
-              job: current.job,
-              contact: current.contact,
-              image: current.image,
-            }
-          }
-        }));
       }
     } catch (error) {
       console.error('Error modifying row:', error.message);
@@ -209,9 +191,8 @@ function Equipe() {
     }
   };
 
-  const addMember = async (newMember) => {
+  const addMember = async () => {
     try {
-      // Perform the addition operation here
       const { data, error } = await supabase
         .from('equipe')
         .insert({
@@ -224,18 +205,18 @@ function Equipe() {
         });
   
       if (error) {
-        console.error('Error adding member:', error.message);
+        console.error('Error adding '+current.name+':', error.message);
       } else {
-        console.log('Member added successfully:', data);
-        setEquipe(prevEquipe => [...prevEquipe, newMember]);
+        getEquipe();
+        setIsProcessing(false);
+        console.log('Successfully added '+current.name+':'+data);
+        alert(current.name+' foi adicionado(a) com sucesso.');
+        closeModal();
       }
     } catch (error) {
       console.error('Error adding member:', error.message);
-    } finally {
-      setIsProcessing(false);
-      closeModal();
-      alert('Dados incluídos com sucesso.');
     }
+    reorderEquipe();
   };
 
   const isMovingAllowed = (member, direction) => {
@@ -248,42 +229,24 @@ function Equipe() {
     const currentIndex = sameCategoryMembers.findIndex(m => m.id === member.id);
 
     if (direction === 'increase') {
-        // Check if it's already at the last position or if the next member is from a different category
         return !(currentIndex === sameCategoryMembers.length - 1 || sameCategoryMembers[currentIndex].order + 1 !== sameCategoryMembers[currentIndex + 1].order);
     } else if (direction === 'decrease') {
-        // Check if it's already at the first position or if the previous member is from a different category
         return !(currentIndex === 0 || sameCategoryMembers[currentIndex].order - 1 !== sameCategoryMembers[currentIndex - 1].order);
     }
-};
+  };
 
   const changePosition = async (member, direction) => {
-    // Find the member by ID
-    // Find other members in the same category
     const sameCategoryMembers = equipe.filter(m => m.category === member.category);
-    // Sort members by order property
     sameCategoryMembers.sort((a, b) => a.order - b.order);
-
-    // Find the index of the current member in the sorted list
     const currentIndex = sameCategoryMembers.findIndex(m => m.id === member.id);
 
     let newOrder;
     if (direction === 'increase') {
-        // Check if it's already at the last position or if the next member is from a different category
-        if (currentIndex === sameCategoryMembers.length - 1 || sameCategoryMembers[currentIndex].order + 1 !== sameCategoryMembers[currentIndex + 1].order) {
-            console.error('Cannot increase order further');
-            return;
-        }
         newOrder = member.order + 1;
     } else if (direction === 'decrease') {
-        // Check if it's already at the first position or if the previous member is from a different category
-        if (currentIndex === 0 || sameCategoryMembers[currentIndex].order - 1 !== sameCategoryMembers[currentIndex - 1].order) {
-            console.error('Cannot decrease order further');
-            return;
-        }
         newOrder = member.order - 1;
     }
 
-    // Update the order property of all members in the same category
     const updatedMembers = sameCategoryMembers.map((m, index) => {
         if (index === currentIndex) {
             return { ...m, order: newOrder };
@@ -296,28 +259,22 @@ function Equipe() {
         }
     });
 
-    // Update the database with the new order
     try {
-        await Promise.all(updatedMembers.map(async m => {
+        const { data, error } = await Promise.all(updatedMembers.map(async m => {
             await supabase
                 .from('equipe')
                 .update({ order: m.order })
                 .eq('id', m.id);
         }));
 
-        // Update the equipe state with the new order
-        setEquipe(prevEquipe => {
-            // Update only the members in the same category
-            return prevEquipe.map(member => {
-                const updatedMember = updatedMembers.find(m => m.id === member.id);
-                return updatedMember ? updatedMember : member;
-            });
-        });
-
-        alert('Posição alterada com sucesso. Recarregue a página para ver a mudança.');
-        location.reload();
+        if (error) {
+          console.error('Error reorganizing data:', error.message);
+        } else {
+          getEquipe();
+          console.log('Data reorganized succesfully:'+data);
+        }
     } catch (error) {
-        console.error('Error updating order property:', error.message);
+        console.error('Error reorganizing data:', error.message);
     }
 };
 
@@ -329,7 +286,7 @@ function Equipe() {
   
   
   const logEquipe = () => {
-    let log = equipe.map(member => {
+    equipe.map(member => {
       console.log(member.order+' '+member.category+' '+member.name)
     })
   }
@@ -337,8 +294,10 @@ function Equipe() {
   
   return (
     <div id="equipeContent" className="middle">
-      <button onClick={logEquipe}>Log equipe</button>
-      <button onClick={reorderEquipe}>Reorder equipe</button>
+      <div className="buttonWrapper">
+        <button className="adminBtn" onClick={logEquipe}>Log</button>
+        <button className="adminBtn" onClick={reorderEquipe}>Fix up/down</button>
+      </div>
       <div className={current.action === 'delete' ? 'modal' : 'none'}>
         <div className="modalBox">
           Tem certeza que deseja deletar {current.name} do banco de dados?
@@ -362,11 +321,11 @@ function Equipe() {
           </div>
 
           <form className="editMemberForm">
-            <label for="name">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
-            <label for="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
-            <label for="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
-            <label for="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
-            <label for="contact">Foto:
+            <label htmlFor="name">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
+            <label htmlFor="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
+            <label htmlFor="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
+            <label htmlFor="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
+            <label htmlFor="contact">Foto:
             <input id="image" type="text" placeholder="Inserir URL da foto"
             onChange={(e) => setCurrent({...current, image: e.target.value})}value={current.image}/></label>
           </form>
@@ -401,8 +360,8 @@ function Equipe() {
           </div>
           {category.members.map((member) => {
             return(
-              <div className="membroEquipeWrapper">
-                <div className="membroEquipe" key={member.id}>
+              <div className="membroEquipeWrapper" key={member.id}>
+                <div className="membroEquipe">
                   <img className="equipeImage" src={member.image === '' ? 'img/blank.png' : member.image}/>
                   <div className="membroInfo">
                     <h2 className="name">{member.name}</h2>
