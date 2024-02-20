@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from './supabaseClient';
-//import './App.css';
 
 function Equipe() {
   const [equipe, setEquipe] = useState([]);

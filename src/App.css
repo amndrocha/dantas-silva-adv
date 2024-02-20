@@ -267,6 +267,8 @@ li {
 
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
 .mobileMenu {
+  display: none;
+  position: fixed;
   background-color: #408080;
   width: 100%;
   height: 100%;
@@ -657,8 +659,9 @@ label {
   font-weight: 500;
 }
 
-#hide {
-  background-color: #e5e4e4;
+
+.invisible {
+  opacity: 0;
 }
 
 .fullScreen {

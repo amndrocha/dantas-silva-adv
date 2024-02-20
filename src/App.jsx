@@ -3,11 +3,13 @@ import Equipe from "./Equipe";
 import './App.css';
 import Login from "./Login";
 import { supabase } from './supabaseClient';
+import Escritorio from "./Escritorio";
 
 function App() {
 
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
+
   async function getImages() {
     const { data } = await supabase.from("images").select();
     setImages(data);
@@ -28,12 +30,14 @@ function App() {
     return image ? image.url : '';
   };
 
-
-
   const [current, setCurrent] = useState('home');
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isProcessing, setIsProcessing] = useState(false);
 
+  useEffect(() => {
+    document.getElementById('equipeContent').scrollTo(0,0);
+    document.getElementById('escritorioContent').scrollTo(0,0);
+  }, [current]);
 
   const openModal = (id) => {
     let element = document.getElementById(id);
@@ -176,17 +180,6 @@ function App() {
             </div>            
         </div>
       )
-    } else if (current === "escritorio") {
-        return(
-          <div id="escritorioContent" className="middle">
-            <h1 style={{margin: "20px"}}>O Escritório</h1>
-            <div id="textBox">
-                <img id="escritorioImage" className="floatImage" src="img/img3.jpg"/>            
-                <p className="paragraph">Dantas Silva Advogados iniciou suas atividades em 1989 com os sócios Nilton Pereira da Silva e Jorge Antonio Dantas Silva, oriundos do mercado segurador. </p> <p className="paragraph">Em 1996 foi formalmente constituída a sociedade, que hoje está estabelecida à Rua da Quitanda, nº 60 – 12º andar, no Centro do Rio de Janeiro. </p> <p className="paragraph">Atuamos em todo o país por meio de nossas modernas instalações e de nossos profissionais altamente qualificados. Todos com vínculo empregatício, trabalhando com equipamentos de informática modernos e sistema próprio do escritório. </p> <p className="paragraph">Estamos prontos para atender nossos clientes do meio empresarial e pessoas físicas, seja pela modalidade presencial ou virtual. </p> <p className="paragraph">Prezamos pela ética, pela transparência e profissionalismo, com objetividade, simplicidade, rapidez e um custo equilibrado. </p> <p className="paragraph">Nossa proposta é de negociação e resolução de conflitos pela via suasória, inclusive quando em litígio judicial. </p> <p className="paragraph">Ao logo de mais de três décadas, vimos trazendo soluções diferenciadas, com projetos e propostas inovadoras, obedecendo aos interesses de nossos clientes e visando o melhor resultado para solução de seus problemas. </p> <p className="paragraph">Nosso ambiente é acolhedor e traz aos profissionais que atuam uma tranquilidade e segurança para o bom desenvolvimento de suas atividades, assim como para o recebimento de nossos clientes. </p> <p className="paragraph">Esta é nossa forma de trabalhar e nossa proposta, as quais se inserem em nossos ideais e em na razão de existir. </p>
-                <p className="sign" style={{width: "100%", textAlign: "end", marginTop: "10px"}}>Jorge Antonio Dantas Silva</p>
-            </div>
-          </div>
-        )
     } else if (current === "login") {
       return (
         <div className="middle">
@@ -198,10 +191,6 @@ function App() {
       return (
         <div className="middle">
         </div>
-      )
-    } else {
-      return (
-        <div className="middle"></div>
       )
     }
   }  
@@ -227,8 +216,8 @@ function App() {
           </div>
       </div>
 
-      <Equipe/>
-      <div id="hide" className={current === 'equipe' ? 'none' : 'middle'}></div>
+      <span className={loading || current === 'equipe' ? 'visible' : 'none'}><Equipe/></span>
+      <span className={loading || current === 'escritorio' ? 'visible' : 'none'}><Escritorio/></span>
 
       <Content/>
       
@@ -262,7 +251,23 @@ function App() {
       <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
       
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
-
+      {/* <div className="mobileMenu">
+        <div id="returnBtn">
+          <a href="javascript:history.back()">
+            <svg width="10vh" height="10vh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 12H20M4 12L8 8M4 12L8 16" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>            
+        <div className="verticalNav">
+          <a href="index.html" className="navLink">Página Inicial</a>
+          <a href="escritorio.html" className="navLink">Escritório</a>
+          <a href="areas.html" className="navLink">Atuação</a>
+          <a href="equipe.html" className="navLink">Equipe</a>
+          <a href="noticias.html" className="navLink">Notícias</a>
+          <a href="" className="navLink">Acesso Remoto</a>
+        </div>
+      </div>         */}
     </div>
   );
 }
