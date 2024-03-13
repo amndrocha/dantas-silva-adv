@@ -1,54 +1,31 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 
-export default function Account({ session }) {
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState(null)
-  const [website, setWebsite] = useState(null)
-  const [avatar_url, setAvatarUrl] = useState(null)
+export default function Account() {
+  const [email, setEmail] = useState('');
+
+  async function getUser() {    
+    const { data, error } = await supabase.auth.getUserIdentities()
+    if (data) {
+      setEmail(data.identities[0].email);
+    }
+  }
 
   useEffect(() => {
-    let ignore = false
-    async function getProfile() {
-      setLoading(true)
-      const { user } = session
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(`username, website, avatar_url`)
-        .eq('id', user.id)
-        .single()
-
-      if (!ignore) {
-        if (error) {
-          console.warn(error)
-        } else if (data) {
-          setUsername(data.username)
-          setWebsite(data.website)
-          setAvatarUrl(data.avatar_url)
-        }
-      }
-
-      setLoading(false)
-    }
-
-    getProfile()
-
-    return () => {
-      ignore = true
-    }
-  }, [session])
+    getUser();
+  }, []);
 
   const handleSignOut = () => {
     supabase.auth.signOut();
     localStorage.clear();
+    location.reload();
   }
 
   return (
     <form className="form-widget">
       <div>
         <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={session.user.email} disabled />
+        <input id="email" type="text" value={email} disabled />
       </div>
 
       <div>

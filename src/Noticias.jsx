@@ -3,8 +3,8 @@ import { supabase } from "./supabaseClient";
 
 function Noticias() {
   const [isProcessing, setIsProcessing] = useState(false);
-  const today = new Date().toISOString();
-  const authorized = localStorage.getItem('auth');
+  const today = new Date().toISOString(); 
+  const [authorized, setAuthorized] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({
@@ -14,6 +14,7 @@ function Noticias() {
     createdAt: '',
     image: ''
   });
+
   
 
   async function getPosts() {
@@ -22,9 +23,19 @@ function Noticias() {
     //console.log(posts);
     //console.log(newPost);
   }
+  
+  async function getUser() {    
+    const { data, error } = await supabase.auth.getUserIdentities()
+    if (data) {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+    }
+  }
 
   useEffect(() => {
     getPosts();
+    getUser();
   }, []);
 
   const getDate = (date) => {
@@ -81,6 +92,60 @@ function Noticias() {
     }
   }
 
+  const deletePost = async () => {
+    setIsProcessing(true);
+    try {
+      setIsProcessing(true);
+      const { data, error } = await supabase
+        .from("posts")
+        .delete()
+        .eq('id', newPost.id);
+  
+      if (error) {
+        console.error('Error removing post:', error.message);
+      } else {
+        console.log('Post deleted successfully:', data);
+        getPosts();
+      }
+    } catch (error) {
+      console.error('Error removing post:', error.message);
+    } finally {
+      setIsProcessing(false);
+      closeModal();
+      alert('Post removido com sucesso.');
+    }
+  };
+
+  const modifyPost = async () => {
+    console.log(newPost);
+    try {
+      setIsProcessing(true);
+      const { data, error } = await supabase
+        .from('posts')
+        .update({
+          title: newPost.title,
+          content: newPost.content,
+          image: newPost.image,
+        })
+        .eq('id', newPost.id);
+  
+      if (error) {
+        console.error('Error modifying post:', error.message);
+      } else {
+        setIsProcessing(false);
+        getPosts();
+        alert('Alterações salvas com sucesso.');
+        console.log('Post modified successfully:', data);
+        closeModal();
+      }
+    } catch (error) {
+      console.error('Error modifying post:', error.message);
+    }
+  };
+
+  window.addEventListener('navigated', () => {
+    closeModal();
+  });
   
 
   return (
@@ -88,12 +153,11 @@ function Noticias() {
 
       <div className={isModalOpen ? 'newPostModal' : 'none'}>
         <div style={{display: 'flex', gap: '30px'}}>
-          <div className="post" style={{width: '40vw', height: '80vh', overflowY: 'scroll'}}>
+          <div className="post" style={{width: '40vw', height: '80vh'}}>
             <div className="postInfo">
               <input type="text" placeholder="Título" className="inputPostTitle" 
               value={newPost.title} onChange={(e) => setNewPost({...newPost, title: e.target.value})}
               />
-              <h2>{getDate('')}</h2>  
             </div>
 
             <textarea className="inputPostContent" placeholder="Insira conteúdo do post"
@@ -101,7 +165,7 @@ function Noticias() {
             />
           </div>
 
-          <div className="post" style={{width: '40vw', height: '80vh', overflowY: 'scroll'}}>
+          <div className="post" style={{width: '40vw', height: '80vh'}}>
               <div className="postInfo">
                   <h1 className="postTitle">{newPost.title == '' ? 'Título' : newPost.title}</h1>
                   <h2>{getDate('')}</h2>                    
@@ -115,23 +179,23 @@ function Noticias() {
             <label htmlFor="">URL da imagem: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
           </div>
           <button className="adminBtn" onClick={() => alert("<b>Texto em negrito</b>\n<i>Texto em itálico</i>\n<a href='url.com'>Texto do hiperlink</a>")}>Dicas</button>
-          <button className="adminBtn" onClick={sendPost} disabled={isProcessing}>{isProcessing ? 'Enviando...' : 'Enviar'}</button>          
-        </div>
-
-
-        
+          <button className={newPost.id ? 'none' : 'adminBtn'} onClick={sendPost} disabled={isProcessing}>{isProcessing ? 'Enviando...' : 'Enviar'}</button>
+          <button className={newPost.id ? 'adminBtn' : 'none'} onClick={modifyPost} disabled={isProcessing}>{isProcessing ? 'Salvando...' : 'Salvar alterações'}</button>       
+        </div>        
       </div>
+
       <div className="buttonWrapper">
         <button className={newPost.id == '' ? 'none' : 'adminBtn'} onClick={closeModal}>Voltar</button>
-        <button onClick={() => setIsModalOpen(true)} id='deleteBtn'
-        className={authorized && newPost.id !== '' ? 'adminBtn' : 'none'}disabled={isProcessing}>{isProcessing ? 'Deletando...' : 'Deletar'}</button> 
+        <button onClick={deletePost}
+        className={authorized && newPost.id !== '' ? 'deleteBtn' : 'none'}
+        disabled={isProcessing}>{isProcessing ? 'Deletando...' : 'Deletar'}</button> 
         <button onClick={() => setIsModalOpen(true)} className={authorized ? 'adminBtn' : 'none'}>{newPost.id == '' ? 'Novo post' : 'Editar'}</button> 
       </div>
 
   
       <div className='posts'>
 
-        <div className={newPost.id == '' ? 'none' : 'post'} style={{width: '100%', height: 'fit-content'}}>
+        <div className={newPost.id == '' ? 'none' : 'post'} style={{width: '100%', height: 'fit-content', overflow: "hidden"}}>
             <div className="postInfo">
                 <h1 className="postTitle">{newPost.title}</h1>
                 <h2>{newPost.createdAt}</h2>                    

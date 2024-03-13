@@ -2,18 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from './supabaseClient';
 
 function Equipe() {
-  const [equipe, setEquipe] = useState([]);
-  async function getEquipe() {
-    const { data } = await supabase.from("equipe").select();
-    setEquipe(data.sort((a, b) => a.order - b.order));
-  }
-
-  useEffect(() => {
-    getEquipe();
-  }, []);
-
-  const authorized = localStorage.getItem('auth');
-
+  const [equipe, setEquipe] = useState([]); 
+  const [authorized, setAuthorized] = useState(false);
   const [current, setCurrent] = useState({
     id: '',
     category: '',
@@ -22,7 +12,26 @@ function Equipe() {
     job: '',
     action: '',
     image: '',
-  });
+  }); 
+
+  async function getEquipe() {
+    const { data } = await supabase.from("equipe").select();
+    setEquipe(data.sort((a, b) => a.order - b.order));
+  }
+
+  async function getUser() {    
+    const { data, error } = await supabase.auth.getUserIdentities();
+    if (data) {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+    }
+  }
+
+  useEffect(() => {
+    getEquipe();
+    getUser();
+  }, []);
 
   const reorderEquipe = async () => {
     let categories = ['Sócio', 'Jurídico', 'Administrativo'];
@@ -313,7 +322,7 @@ function Equipe() {
             <label htmlFor="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
             <label htmlFor="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
             <label htmlFor="contact">Foto:
-            <input id="image" type="text" placeholder="Inserir URL da foto"
+            <input type="text" placeholder="Inserir URL da foto"
             onChange={(e) => setCurrent({...current, image: e.target.value})} value={current.image}/></label>
           </form>
           <div className={authorized ? 'buttonWrapper' : 'none'}>
@@ -324,7 +333,7 @@ function Equipe() {
             onClick={addMember}>
               {isProcessing ? 'Salvando..' : 'Confirmar'}
             </button>
-            <button  className={current.action === 'edit' ? 'adminBtn' : 'none'} id="deleteBtn"
+            <button  className={current.action === 'edit' ? 'deleteBtn' : 'none'}
             onClick={clickedDelete}>Deletar</button>     
             <button  className={current.action === 'edit' ? 'adminBtn' : 'none'}
             disabled={isProcessing}
@@ -375,6 +384,7 @@ function Equipe() {
           })}
         </div>)
       })}
+      <button className="adminBtn" style={{marginTop: '30px'}} onClick={() => window.dispatchEvent(new Event('login'))}>Login</button>
     </div>
   );
 }

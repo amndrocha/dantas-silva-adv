@@ -21,9 +21,8 @@ export default function Auth() {
       alert(error.error_description || error.message)
     }
 
-    localStorage.setItem('auth', true);
-
     setLoading(false);
+    location.reload();
   }
 
   return (

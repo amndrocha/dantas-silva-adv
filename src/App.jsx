@@ -10,6 +10,11 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
+  const [current, setCurrent] = useState('home');
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isProcessing, setIsProcessing] = useState(false);  
+  const [authorized, setAuthorized] = useState(false);  
+  const [openMenu, setOpenMenu] = useState(false); 
 
   async function getImages() {
     const { data } = await supabase.from("images").select();
@@ -17,9 +22,31 @@ function App() {
     setLoading(false);
   }
 
+  async function getUser() {    
+    const { data, error } = await supabase.auth.getUserIdentities()
+    if (data) {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+    }
+  }
+
   useEffect(() => {
     getImages();
+    getUser();
   }, []);
+
+  useEffect(() => {
+    document.getElementById('equipeContent').scrollTo(0,0);
+    document.getElementById('escritorioContent').scrollTo(0,0);
+    document.getElementById('noticiasContent').scrollTo(0,0);
+    window.dispatchEvent(new Event('navigated'));
+    setOpenMenu(false);
+  }, [current]);
+
+  window.addEventListener('login', () => {
+    setCurrent('login');
+  });
 
   const [currentImage, setCurrentImage] = useState({
     id: '',
@@ -30,16 +57,6 @@ function App() {
     const image = images.find(img => img.id === id);
     return image ? image.url : '';
   };
-
-  const [current, setCurrent] = useState('home');
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [isProcessing, setIsProcessing] = useState(false);  
-  const authorized = localStorage.getItem('auth');
-
-  useEffect(() => {
-    document.getElementById('equipeContent').scrollTo(0,0);
-    document.getElementById('escritorioContent').scrollTo(0,0);
-  }, [current]);
 
   const openModal = (id) => {
     let element = document.getElementById(id);
@@ -197,7 +214,7 @@ function App() {
           <div id="altDecoBox" className="decoBox"></div>
           <div className="navegation">
               <img id="logo" src="img\logo.png" onClick={() => setCurrent('home')}/>
-              <img id="menuLink" href="menu.html" className="navLink" src="img\menu.svg"/>
+              <img id="menuLink" onClick={() => setOpenMenu(!openMenu)} className="navLink" src="img\menu.svg"/>
               <div id="horizontalNav">
                   <a className="navLink" onClick={() => setCurrent('escritorio')}>Escritório</a>
                   <div className="divider">⏐</div>
@@ -207,7 +224,7 @@ function App() {
                   <div className="divider">⏐</div>
                   <a className="navLink" onClick={() => setCurrent('noticias')}>Notícias</a>
                   <div className="divider">⏐</div>
-                  <a className="navLink" onClick={() => setCurrent('login')}>Acesso</a>
+                  <a className="navLink" href="https://dantassilva.net/sigds.asp"target="_blank">Acesso</a>
               </div>
           </div>
       </div>
@@ -248,23 +265,20 @@ function App() {
       <div id="copyright"><b style={{color: 'rgb(255, 255, 255, 0.4)'}}>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
       
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
-      {/* <div className="mobileMenu">
-        <div id="returnBtn">
-          <a href="javascript:history.back()">
-            <svg width="10vh" height="10vh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 12H20M4 12L8 8M4 12L8 16" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
+
+      <div className={openMenu ? "mobileMenu" : 'none'}>
+        <div id="returnBtn" onClick={() => setOpenMenu(false)}>
+          <img style={{cursor: 'pointer'}} src='./img/arrow.svg'/>
         </div>            
         <div className="verticalNav">
-          <a href="index.html" className="navLink">Página Inicial</a>
-          <a href="escritorio.html" className="navLink">Escritório</a>
-          <a href="areas.html" className="navLink">Atuação</a>
-          <a href="equipe.html" className="navLink">Equipe</a>
-          <a href="noticias.html" className="navLink">Notícias</a>
-          <a href="" className="navLink">Acesso Remoto</a>
+          <a onClick={() => setCurrent('home')} className="navLink">Página Inicial</a>
+          <a onClick={() => setCurrent('escritorio')} className="navLink">Escritório</a>
+          <a onClick={() => setCurrent('areas')} className="navLink">Atuação</a>
+          <a onClick={() => setCurrent('equipe')} className="navLink">Equipe</a>
+          <a onClick={() => setCurrent('noticias')} className="navLink">Notícias</a>
+          <a onClick={() => setCurrent('login')} className="navLink">Acesso Remoto</a>
         </div>
-      </div>         */}
+      </div>        
     </div>
   );
 }
