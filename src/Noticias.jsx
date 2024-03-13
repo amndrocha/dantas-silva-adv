@@ -149,7 +149,7 @@ function Noticias() {
 
       <div className={isModalOpen ? 'newPostModal' : 'none'}>
         <div className="buttonWrapper">
-          <label htmlFor="">URL da imagem: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
+          <label htmlFor="">Img URL: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
         </div>
         <div style={{display: 'flex', gap: '30px'}}>
           <div  className={preview? 'none' : 'post'} style={{width: '90vw', maxWidth: '800px', height: '80vh'}}>
