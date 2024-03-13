@@ -667,7 +667,6 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
   position: fixed;
   overflow-y: auto;
   top: 0;
@@ -678,6 +677,7 @@ textarea {
   max-height: 100vh;
   background-color: #e5e4e4;
   z-index: 1;
+  gap: 10px;
 }
 
 .newPost {
@@ -701,7 +701,20 @@ textarea {
   outline: 2px solid #408080;
   padding: 20px;
   overflow-y: scroll;
+}
 
+.postInput {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  gap: 5px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  @media only screen and (max-width: 800px) {
+    width: 95%;  
+  }
 }
 
 .postPreview {
@@ -751,11 +764,11 @@ textarea {
   font-family: "Garamond";
   font-size: 20px;
   width: 100%;
-  min-height: max-content;
+  min-width: 100%;
+  height: 100%;
   background-color: transparent;
   outline: none;
   border: none;
-  height: 85%;
   resize: none;
   border: 1px solid grey;
 }

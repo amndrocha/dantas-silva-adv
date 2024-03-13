@@ -26,12 +26,13 @@ function Noticias() {
   }
   
   async function getUser() {    
-    const { data, error } = await supabase.auth.getUserIdentities()
-    if (data) {
-      setAuthorized(true);
-    } else {
-      setAuthorized(false);
-    }
+    // const { data, error } = await supabase.auth.getUserIdentities()
+    // if (data) {
+    //   setAuthorized(true);
+    // } else {
+    //   setAuthorized(false);
+    // }
+    setAuthorized(true);
   }
 
   useEffect(() => {
@@ -148,31 +149,30 @@ function Noticias() {
     <div id="noticiasContent" className="middle">
 
       <div className={isModalOpen ? 'newPostModal' : 'none'}>
-        <div className="buttonWrapper">
-          <label htmlFor="">Img URL: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
+        <div className="buttonWrapper" style={{marginTop: '10px'}}>
+          <label htmlFor="" style={{whiteSpace: "nowrap"}}>Img URL: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
         </div>
-        <div style={{display: 'flex', gap: '30px'}}>
-          <div  className={preview? 'none' : 'post'} style={{width: '90vw', maxWidth: '800px', height: '80vh'}}>
-            <div className="postInfo">
-              <input type="text" placeholder="Título" className="inputPostTitle" 
-              value={newPost.title} onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-              />
-            </div>
-
-            <textarea className="inputPostContent" placeholder="Insira conteúdo do post"
-            value={newPost.content} onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+        
+        <div  className={preview? 'none' : 'postInput'}>
+          <div className="postInfo">
+            <input type="text" placeholder="Título" className="inputPostTitle" 
+            value={newPost.title} onChange={(e) => setNewPost({...newPost, title: e.target.value})}
             />
           </div>
 
-          <div className={preview? "post" : 'none'} style={{width: '90vw', maxWidth: '800px', height: '80vh'}}>
-              <div className="postInfo">
-                  <h1 className="postTitle">{newPost.title == '' ? 'Título' : newPost.title}</h1>
-                  <h2>{getDate('')}</h2>                    
-              </div>
-              <div className="postBox"><img className={newPost.image !== '' ? "floatImage" : 'none'} src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
-          </div>          
+          <textarea className="inputPostContent" placeholder="Insira conteúdo do post"
+          value={newPost.content} onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+          />         
         </div>
-        <div className="buttonWrapper">
+
+        <div className={preview ? "postInput" : 'none'} style={{overflowY: 'auto'}}>
+          <div className="postInfo">
+              <h1 className="postTitle">{newPost.title == '' ? 'Título' : newPost.title}</h1>
+              <h2>{getDate('')}</h2>                    
+          </div>
+          <div className="postBox"><img className={newPost.image !== '' ? "floatImage" : 'none'} src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
+        </div>         
+        <div className="buttonWrapper" style={{marginBottom: '10px'}}>
           <button className="adminBtn" onClick={closeModal}>Voltar</button>
           
           <button className="adminBtn" onClick={() => alert("<b>Texto em negrito</b>\n<i>Texto em itálico</i>\n<a href='url.com'>Texto do hiperlink</a>")}>Dicas</button>
