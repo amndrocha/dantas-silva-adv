@@ -26,13 +26,12 @@ function Noticias() {
   }
   
   async function getUser() {    
-    // const { data, error } = await supabase.auth.getUserIdentities()
-    // if (data) {
-    //   setAuthorized(true);
-    // } else {
-    //   setAuthorized(false);
-    // }
-    setAuthorized(true);
+    const { data, error } = await supabase.auth.getUserIdentities()
+    if (data) {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+    }
   }
 
   useEffect(() => {
