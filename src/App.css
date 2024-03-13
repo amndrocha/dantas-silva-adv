@@ -30,9 +30,6 @@ body {
   height: 100%;
 }
 
-b {
-  color: rgb(255, 255, 255, 0.4);
-}
 
 p {
   margin: 0;
@@ -69,6 +66,12 @@ li {
       margin: 10px;   
   }
 }
+
+textarea {
+  overflow: visible;
+  min-height: fit-content;
+}
+
 
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
 
@@ -305,7 +308,7 @@ li {
   flex-direction: row;
   justify-content: center;
   gap: 20px;
-  height: 100%;
+  height: fit-content;
   @media only screen and (max-width: 720px) {
       flex-direction: column;
       height: fit-content;
@@ -318,7 +321,7 @@ li {
   justify-content: space-between;
   outline: 3px solid #408080;
   width: 210px;
-  height: 100%;
+  height: fit-content;
   @media only screen and (max-width: 720px) {
       width: 50vw;
   }
@@ -327,6 +330,7 @@ li {
 .areasImageBox {
   width: 100%;
   height: 100%;
+  min-height: 200px;
   background-size: cover;
   background-position: center;
   @media only screen and (max-width: 720px) {
@@ -360,6 +364,7 @@ li {
   float: left;
   margin-right: 20px;
   width: 40%;
+  height: auto;
 }
 
 .colorLight {
@@ -442,6 +447,12 @@ li {
   object-fit: cover;
 }
 
+.equipeImageReplacer {
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+}
+
 .name {
   color: #0A3200;;
 }
@@ -474,10 +485,63 @@ background: #555;
   align-items: center;
 }
 
-.post {
+
+.limitWidth {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 10px;
+  height: 80%;
+}
+
+
+.newPostModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  background-color: #e5e4e4;
+  z-index: 1;
+  gap: 30px;
+}
+
+.newPost {
+  width: 40vw;
+  height: 90vh;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
   width: 70%;
+  gap: 60px;
+}
+
+.post {
   outline: 3px solid #408080;
   padding: 20px;
+}
+
+.postPreview {
+  outline: 3px solid #408080;
+  padding: 20px;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.postPreview:hover {
+  background-color: #40808015;
 }
 
 .postInfo {
@@ -485,10 +549,61 @@ background: #555;
 }
 
 .postTitle {
-  width: 100%;
   border-bottom: 1px solid grey;
 }
 
+.inputPostTitle {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  height: 48px;
+  border-bottom: 1px solid grey;
+  font-family: "Garamond";
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.inputPostContent {
+  font-family: "Garamond";
+  font-size: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.postPreviewImage {
+  height: 130px;
+  width: 130px !important;
+  background-color: red;
+  object-fit: cover;
+  object-position: center;
+}
+
+.postImage {
+  float: left;
+  background-color: red;
+  margin-right: 20px;
+  width: 40%;
+  height: auto;
+}
+
+.textSpan {
+  display: block;
+  white-space: pre-wrap;
+  height: 100%;
+}
+
+.textSpanPreview {
+  display: block;
+  height: 30px;
+  width: 55vw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .paragraph {
   color: #0A3200;
   margin-bottom: 10px;
@@ -504,7 +619,13 @@ background: #555;
 
 .postBox {
   display: block;
-  overflow-x: clip;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  overflow: clip;
+  text-align: left;
+  white-space: pre;
 }
 
 .postImgBox {
@@ -535,14 +656,16 @@ background: #555;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
   text-align: center;
   gap: 20px;
+  border-radius: 20px;
 }
 
 .editMemberForm {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 #editBtn {

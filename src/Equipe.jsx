@@ -12,8 +12,7 @@ function Equipe() {
     getEquipe();
   }, []);
 
-  const email = localStorage.getItem('email');
-  const authorized = email == 'amndrocha@gmail.com';
+  const authorized = localStorage.getItem('auth');
 
   const [current, setCurrent] = useState({
     id: '',
@@ -219,12 +218,9 @@ function Equipe() {
   };
 
   const isMovingAllowed = (member, direction) => {
-    // Find other members in the same category
     const sameCategoryMembers = equipe.filter(m => m.category === member.category);
-    // Sort members by order property
     sameCategoryMembers.sort((a, b) => a.order - b.order);
 
-    // Find the index of the current member in the sorted list
     const currentIndex = sameCategoryMembers.findIndex(m => m.id === member.id);
 
     if (direction === 'increase') {
@@ -277,23 +273,15 @@ function Equipe() {
     }
 };
 
-
-
-
-
-
-  
-  
   const logEquipe = () => {
     equipe.map(member => {
       console.log(member.order+' '+member.category+' '+member.name)
     })
   }
   
-  
   return (
     <div id="equipeContent" className="middle">
-      <div className="buttonWrapper">
+      <div className={authorized ? 'buttonWrapper' : 'none'}>
         <button className="adminBtn" onClick={logEquipe}>Log</button>
         <button className="adminBtn" onClick={reorderEquipe}>Fix up/down</button>
       </div>
@@ -320,15 +308,15 @@ function Equipe() {
           </div>
 
           <form className="editMemberForm">
-            <label htmlFor="name">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
+            <label htmlFor="category">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
             <label htmlFor="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
             <label htmlFor="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
             <label htmlFor="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
             <label htmlFor="contact">Foto:
             <input id="image" type="text" placeholder="Inserir URL da foto"
-            onChange={(e) => setCurrent({...current, image: e.target.value})}value={current.image}/></label>
+            onChange={(e) => setCurrent({...current, image: e.target.value})} value={current.image}/></label>
           </form>
-          <div className="buttonWrapper">
+          <div className={authorized ? 'buttonWrapper' : 'none'}>
             <button className="adminBtn"
             onClick={closeModal}>Voltar</button>
             <button  className={current.action === 'add' ? 'adminBtn' : 'none'}
@@ -361,19 +349,19 @@ function Equipe() {
             return(
               <div className="membroEquipeWrapper" key={member.id}>
                 <div className="membroEquipe">
-                  <img className="equipeImage" src={member.image === '' ? 'img/blank.png' : member.image}/>
+                  <img className={member.image === '' ? 'equipeImageReplacer' : "equipeImage"} src={member.image}/>
                   <div className="membroInfo">
                     <h2 className="name">{member.name}</h2>
                     <h3 className="job">{member.job}</h3>
                     <p className="contact">{member.contact}</p>
-                    <div className="buttonWrapper">
-                      <button className={authorized ? 'adminBtn' : 'none'} id="editBtn"
+                    <div className={authorized ? 'buttonWrapper' : 'none'}>
+                      <button className='adminBtn' id="editBtn"
                       onClick={() => clickedEdit(member)}>Editar</button>
                       <div>
-                        <button className={authorized ? 'adminBtn' : 'none'} 
+                        <button className='adminBtn' 
                         id="arrowBtnUp" disabled={!isMovingAllowed(member, "decrease")}
                         onClick={() => changePosition(member, 'decrease')}>Up</button>
-                        <button className={authorized ? 'adminBtn' : 'none'} 
+                        <button className='adminBtn' 
                         id="arrowBtnDown" disabled={!isMovingAllowed(member, "increase")}
                         onClick={() => changePosition(member, 'increase')}>Down</button>                      
                       </div>

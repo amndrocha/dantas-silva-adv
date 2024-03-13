@@ -4,6 +4,7 @@ import './App.css';
 import Login from "./Login";
 import { supabase } from './supabaseClient';
 import Escritorio from "./Escritorio";
+import Noticias from "./Noticias";
 
 function App() {
 
@@ -32,7 +33,8 @@ function App() {
 
   const [current, setCurrent] = useState('home');
   const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);  
+  const authorized = localStorage.getItem('auth');
 
   useEffect(() => {
     document.getElementById('equipeContent').scrollTo(0,0);
@@ -110,21 +112,21 @@ function App() {
                 style={{backgroundImage: "url("+getUrl("indexImageBox1")+")"}}>
                   <button onClick={() => openModal("indexImageBox1")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>{getUrl('indexImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                  className={authorized ? 'adminBtn' : 'none'}>{getUrl('indexImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
                 <div className="indexImageBox" id="indexImageBox2"
                 style={{backgroundImage: "url("+getUrl("indexImageBox2")+")"}}>
                   <button onClick={() => openModal("indexImageBox2")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>{getUrl('indexImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                  className={authorized ? 'adminBtn' : 'none'}>{getUrl('indexImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
                 <div className="indexImageBox" id="indexImageBox3"
                 style={{backgroundImage: "url("+getUrl("indexImageBox3")+")"}}>
                   <button onClick={() => openModal("indexImageBox3")}
                   style={{margin: '10px'}}
-                  className='adminBtn'>{getUrl('indexImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                  className={authorized ? 'adminBtn' : 'none'}>{getUrl('indexImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                 </div>
 
             </div>
@@ -139,7 +141,7 @@ function App() {
                     <div id="areasImageBox1" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox1")+")"}}>
                       <button onClick={() => openModal("areasImageBox1")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>{getUrl('areasImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                      className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
                         <li>Seguro e Capitalização</li><hr/>
@@ -160,14 +162,14 @@ function App() {
                     <div id="areasImageBox2" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox2")+")"}}>
                       <button onClick={() => openModal("areasImageBox2")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>{getUrl('areasImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                      className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox2') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                 </div>
                 <div className="areasColumn">
                     <div id="areasImageBox3" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox3")+")"}}>
                       <button onClick={() => openModal("areasImageBox3")}
                       style={{margin: '10px'}}
-                      className='adminBtn'>{getUrl('areasImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
+                      className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
                         <li>Empresarial</li><hr/>
@@ -184,12 +186,6 @@ function App() {
       return (
         <div className="middle">
           <Login/>
-          <button onClick={() => localStorage.clear()}>Limpar</button>
-        </div>
-      )
-    } else if (current === "noticias") {
-      return (
-        <div className="middle">
         </div>
       )
     }
@@ -218,6 +214,7 @@ function App() {
 
       <span className={loading || current === 'equipe' ? 'visible' : 'none'}><Equipe/></span>
       <span className={loading || current === 'escritorio' ? 'visible' : 'none'}><Escritorio/></span>
+      <span className={loading || current === 'noticias' ? 'visible' : 'none'}><Noticias/></span>
 
       <Content/>
       
@@ -231,9 +228,9 @@ function App() {
 
           <div className="buttonWrapper">
             <button onClick={closeModal}
-            className='adminBtn'>Voltar</button>
-            <button  className='adminBtn' onClick={getPreviousUrl}>Resetar</button> 
-            <button  className='adminBtn' onClick={changeImage}
+            className={authorized ? 'adminBtn' : 'none'}>Voltar</button>
+            <button  className={authorized ? 'adminBtn' : 'none'} onClick={getPreviousUrl}>Resetar</button> 
+            <button  className={authorized ? 'adminBtn' : 'none'} onClick={changeImage}
             disabled={isProcessing}>{isProcessing ? 'Salvando..' : 'Salvar alterações'}
             </button>              
           </div>      
@@ -248,7 +245,7 @@ function App() {
           <p className="addressItem" style={{textAlign: "center"}}>+55 (21) 3078-3363 - advogados@dantassilva.com.br </p>
       </div>
 
-      <div id="copyright"><b>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
+      <div id="copyright"><b style={{color: 'rgb(255, 255, 255, 0.4)'}}>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
       
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
       {/* <div className="mobileMenu">

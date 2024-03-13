@@ -39,65 +39,16 @@ export default function Account({ session }) {
     }
   }, [session])
 
-  async function updateProfile(event, avatarUrl) {
-    event.preventDefault()
-
-    setLoading(true)
-    const { user } = session
-
-    const updates = {
-      id: user.id,
-      username,
-      website,
-      avatar_url,
-      updated_at: new Date(),
-    }
-
-    const { error } = await supabase.from('profiles').upsert(updates)
-
-    if (error) {
-      alert(error.message)
-    } else {
-      setAvatarUrl(avatarUrl)
-    }
-    setLoading(false)
-  }
-
   const handleSignOut = () => {
     supabase.auth.signOut();
     localStorage.clear();
   }
 
   return (
-    <form onSubmit={updateProfile} className="form-widget">
+    <form className="form-widget">
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session.user.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="username">Name</label>
-        <input
-          id="username"
-          type="text"
-          required
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <button className="button block primary" type="submit" disabled={loading}>
-          {loading ? 'Loading ...' : 'Update'}
-        </button>
       </div>
 
       <div>
