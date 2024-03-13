@@ -218,7 +218,7 @@ function App() {
           <div id="altDecoBox" className="decoBox"></div>
           <div className="navegation">
               <img id="logo" src="img\logo.png" onClick={() => setCurrent('home')}/>
-              <img id="menuLink" onClick={() => setOpenMenu(!openMenu)} className="navLink" src="img\menu.svg"/>
+              <div id="menuLink" onClick={() => setOpenMenu(!openMenu)} className="navLink">☰</div>
               <div id="horizontalNav">
                   <a className={current == 'escritorio' ? 'navLinkSelected' : "navLink"} onClick={() => setCurrent('escritorio')}>Escritório</a>
                   <div className="divider">⏐</div>

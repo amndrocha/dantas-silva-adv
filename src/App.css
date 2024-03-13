@@ -186,11 +186,17 @@ textarea {
 
 
 #menuLink {
+  font-size: 42px;
   display: none;
   @media only screen and (max-width: 720px) {
       display: flex;        
   }
 }
+
+#menuLink:hover {
+  border: none;
+}
+
 
 .contentWrapper {
   position: absolute;
@@ -782,7 +788,6 @@ textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: clip;  
-  background-color: red;
   @media only screen and (max-width: 981px) {
     width: 70vw;
   }
