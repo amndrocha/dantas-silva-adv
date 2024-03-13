@@ -258,7 +258,7 @@ function App() {
                 <div className="addressItem">Rua da Quitanda, 60, 12º andar</div>
                 <div style={{display: 'flex', gap: '10px'}}>
                   <div className="addressItem" id="addressItemFixed">Rio de Janeiro/RJ, Brasil</div>
-                  <div className="addressItem">CEP 20011-030 🡥</div>  
+                  <div className="addressItem">CEP 20011-030 <img style={{height: '12px', opacity: '0.5', filter: 'invert(1)', marginLeft: '5px'}} src="./img/link.svg"/></div>  
                 </div>                
             </a>
             <div className="desktopRow">
