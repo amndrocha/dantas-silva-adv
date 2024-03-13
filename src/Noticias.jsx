@@ -3,6 +3,7 @@ import { supabase } from "./supabaseClient";
 
 function Noticias() {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [preview, setPreview] = useState(false);
   const today = new Date().toISOString(); 
   const [authorized, setAuthorized] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,8 +148,11 @@ function Noticias() {
     <div id="noticiasContent" className="middle">
 
       <div className={isModalOpen ? 'newPostModal' : 'none'}>
+        <div className="buttonWrapper">
+          <label htmlFor="">URL da imagem: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
+        </div>
         <div style={{display: 'flex', gap: '30px'}}>
-          <div className="post" style={{width: '40vw', height: '80vh'}}>
+          <div  className={preview? 'none' : 'post'} style={{width: '90vw', maxWidth: '800px', height: '80vh'}}>
             <div className="postInfo">
               <input type="text" placeholder="Título" className="inputPostTitle" 
               value={newPost.title} onChange={(e) => setNewPost({...newPost, title: e.target.value})}
@@ -160,20 +164,19 @@ function Noticias() {
             />
           </div>
 
-          <div className="post" style={{width: '40vw', height: '80vh'}}>
+          <div className={preview? "post" : 'none'} style={{width: '90vw', maxWidth: '800px', height: '80vh'}}>
               <div className="postInfo">
                   <h1 className="postTitle">{newPost.title == '' ? 'Título' : newPost.title}</h1>
                   <h2>{getDate('')}</h2>                    
               </div>
-              <div className="postBox"><img className="floatImage" src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
+              <div className="postBox"><img className={newPost.image !== '' ? "floatImage" : 'none'} src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
           </div>          
         </div>
         <div className="buttonWrapper">
           <button className="adminBtn" onClick={closeModal}>Voltar</button>
-          <div className="buttonWrapper">
-            <label htmlFor="">URL da imagem: <input type="text" value={newPost.image} onChange={(e) => setNewPost({...newPost, image: e.target.value})}/></label>  
-          </div>
+          
           <button className="adminBtn" onClick={() => alert("<b>Texto em negrito</b>\n<i>Texto em itálico</i>\n<a href='url.com'>Texto do hiperlink</a>")}>Dicas</button>
+          <button className="adminBtn" onClick={() => setPreview(!preview)}>{preview ? 'Editar' : 'Preview'}</button>
           <button className={newPost.id ? 'none' : 'adminBtn'} onClick={sendPost} disabled={isProcessing}>{isProcessing ? 'Enviando...' : 'Enviar'}</button>
           <button className={newPost.id ? 'adminBtn' : 'none'} onClick={modifyPost} disabled={isProcessing}>{isProcessing ? 'Salvando...' : 'Salvar alterações'}</button>       
         </div>        

@@ -676,7 +676,7 @@ textarea {
   height: 100vh;
   background-color: #e5e4e4;
   z-index: 1;
-  gap: 30px;
+  gap: 10px;
 }
 
 .newPost {
@@ -697,7 +697,7 @@ textarea {
 }
 
 .post {
-  outline: 3px solid #408080;
+  outline: 2px solid #408080;
   padding: 20px;
   overflow-y: scroll;
 
