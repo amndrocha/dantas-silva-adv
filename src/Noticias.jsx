@@ -58,11 +58,6 @@ function Noticias() {
     setIsModalOpen(false);
   }
 
-  const handleEditPost = (post) => {
-    setNewPost(post);
-    setIsModalOpen(true);
-  }
-
   async function sendPost() {
     setIsProcessing(true);
     try {
@@ -184,7 +179,8 @@ function Noticias() {
         </div>        
       </div>
 
-      <div className="buttonWrapper">
+      <div className="gap" style={{height: '30px'}}></div>
+      <div className={newPost.id !== '' || authorized ? "buttonWrapper" : 'none'}>
         <button className={newPost.id == '' ? 'none' : 'adminBtn'} onClick={closeModal}>Voltar</button>
         <button onClick={deletePost}
         className={authorized && newPost.id !== '' ? 'deleteBtn' : 'none'}

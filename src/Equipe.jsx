@@ -290,6 +290,7 @@ function Equipe() {
   
   return (
     <div id="equipeContent" className="middle">
+      <div className="gap"></div>
       <div className={authorized ? 'buttonWrapper' : 'none'}>
         <button className="adminBtn" onClick={logEquipe}>Log</button>
         <button className="adminBtn" onClick={reorderEquipe}>Fix up/down</button>
@@ -384,7 +385,8 @@ function Equipe() {
           })}
         </div>)
       })}
-      <button className="adminBtn" style={{marginTop: '30px'}} onClick={() => window.dispatchEvent(new Event('login'))}>Login</button>
+      <button className="adminBtn" onClick={() => window.dispatchEvent(new Event('login'))}>Login</button>
+      <div className="gap"></div>
     </div>
   );
 }
