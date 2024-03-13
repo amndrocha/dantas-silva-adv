@@ -228,7 +228,7 @@ function App() {
                   <div className="divider">⏐</div>
                   <a className={current == 'noticias' ? 'navLinkSelected' : "navLink"} onClick={() => setCurrent('noticias')}>Notícias</a>
                   <div className="divider">⏐</div>
-                  <a className="navLink" href="https://dantassilva.net/sigds.asp"target="_blank">Acesso</a>
+                  <a className="navLink" href="https://dantassilva.net/sigds.asp" target="_blank">Acesso</a>
               </div>
           </div>
       </div>
@@ -302,7 +302,7 @@ function App() {
           <a onClick={() => setCurrent('areas')} className={current == 'areas' ? 'navLinkSelected' : "navLink"}>Atuação</a>
           <a onClick={() => setCurrent('equipe')} className={current == 'equipe' ? 'navLinkSelected' : "navLink"}>Equipe</a>
           <a onClick={() => setCurrent('noticias')} className={current == 'noticias' ? 'navLinkSelected' : "navLink"}>Notícias</a>
-          <a onClick={() => setCurrent('login')} className="navLink">Acesso →</a>
+          <a href="https://dantassilva.net/sigds.asp" target="_blank" className="navLink">Acesso →</a>
         </div>
       </div>        
     </div>
