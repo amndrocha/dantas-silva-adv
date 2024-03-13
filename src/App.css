@@ -17,7 +17,7 @@
   margin: 0;
   padding: 0;
   color: #4d4d4d;
-  text-align: justify;
+  text-align: left;
 }
 
 
@@ -146,10 +146,18 @@ textarea {
   text-decoration: none;
   margin: 0 20px;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .navLink:hover {
-  text-decoration: underline;
+  border-bottom: 1px solid white;
+}
+
+.navLinkSelected {
+  color: white;
+  margin: 0 20px;
+  border: 1px solid transparent;
+  font-weight: bold;
 }
 
 #logo {
@@ -213,7 +221,8 @@ textarea {
     height: calc(100vh - 9rem);
   }
   @media only screen and (max-width: 720px) {
-    height: fit-content;
+    height: fit-content;      
+    min-height: calc(100vh - 4rem);
   }
 }
 
@@ -295,6 +304,11 @@ textarea {
   color: #e5e4e4;
 }
 
+#addressItemFixed {  
+  justify-self: stretch;
+  align-self: flex-end;
+}
+
 #r {
   display: none;
 }
@@ -358,7 +372,7 @@ textarea {
 }
 
 .verticalNav{
-  font-size: 6vh;
+  font-size: 40px;
   display: flex;
   flex-direction: column;
   align-items: end;
@@ -433,7 +447,7 @@ textarea {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 #escritorioImage {
@@ -614,6 +628,9 @@ textarea {
   gap: 20px;
   justify-content: start;
   align-items: center;
+  @media only screen and (max-width: 720px) {
+    min-height: calc(100vh - 4rem);
+  }
 }
 
 

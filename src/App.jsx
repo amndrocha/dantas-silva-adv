@@ -40,6 +40,8 @@ function App() {
     document.getElementById('equipeContent').scrollTo(0,0);
     document.getElementById('escritorioContent').scrollTo(0,0);
     document.getElementById('noticiasContent').scrollTo(0,0);
+    document.getElementById('contentWrapper').scrollTo(0,0);
+    window.scrollTo(0,0);
     window.dispatchEvent(new Event('navigated'));
     setOpenMenu(false);
   }, [current]);
@@ -218,24 +220,24 @@ function App() {
               <img id="logo" src="img\logo.png" onClick={() => setCurrent('home')}/>
               <img id="menuLink" onClick={() => setOpenMenu(!openMenu)} className="navLink" src="img\menu.svg"/>
               <div id="horizontalNav">
-                  <a className="navLink" onClick={() => setCurrent('escritorio')}>Escritório</a>
+                  <a className={current == 'escritorio' ? 'navLinkSelected' : "navLink"} onClick={() => setCurrent('escritorio')}>Escritório</a>
                   <div className="divider">⏐</div>
-                  <a className="navLink" onClick={() => setCurrent('equipe')}>Equipe</a>
+                  <a className={current == 'equipe' ? 'navLinkSelected' : "navLink"} onClick={() => setCurrent('equipe')}>Equipe</a>
                   <div className="divider">⏐</div>
-                  <a className="navLink"  onClick={() => setCurrent('areas')}>Atuação</a>
+                  <a className={current == 'areas' ? 'navLinkSelected' : "navLink"}  onClick={() => setCurrent('areas')}>Atuação</a>
                   <div className="divider">⏐</div>
-                  <a className="navLink" onClick={() => setCurrent('noticias')}>Notícias</a>
+                  <a className={current == 'noticias' ? 'navLinkSelected' : "navLink"} onClick={() => setCurrent('noticias')}>Notícias</a>
                   <div className="divider">⏐</div>
                   <a className="navLink" href="https://dantassilva.net/sigds.asp"target="_blank">Acesso</a>
               </div>
           </div>
       </div>
 
-      <div className="contentWrapper">
+      <div id="contentWrapper" className="contentWrapper">
         <span className={loading || current === 'equipe' ? 'visible' : 'none'}><Equipe/></span>
         <span className={loading || current === 'escritorio' ? 'visible' : 'none'}>
             <div id="escritorioContent" className="middle">
-              <div className="gap"></div> 
+              <div className="gap" style={{height: 0}}></div> 
               <h1>O Escritório</h1>
               <div id="textBox">
                   <div id="escritorioImage" className="floatImage" style={{backgroundImage: "url("+getUrl("escritorioImage")+")"}}>
@@ -255,8 +257,8 @@ function App() {
             <a id="address" href="https://maps.app.goo.gl/ySznSRfEZuU6obLj6" target="_blank">
                 <div className="addressItem">Rua da Quitanda, 60, 12º andar</div>
                 <div style={{display: 'flex', gap: '10px'}}>
-                  <div className="addressItem">Rio de Janeiro/RJ, Brasil</div>
-                  <div className="addressItem">CEP 20011-030</div>  
+                  <div className="addressItem" id="addressItemFixed">Rio de Janeiro/RJ, Brasil</div>
+                  <div className="addressItem">CEP 20011-030 🡥</div>  
                 </div>                
             </a>
             <div className="desktopRow">
@@ -295,12 +297,12 @@ function App() {
           <img style={{cursor: 'pointer'}} src='./img/arrow.svg'/>
         </div>            
         <div className="verticalNav">
-          <a onClick={() => setCurrent('home')} className="navLink">Página Inicial</a>
-          <a onClick={() => setCurrent('escritorio')} className="navLink">Escritório</a>
-          <a onClick={() => setCurrent('areas')} className="navLink">Atuação</a>
-          <a onClick={() => setCurrent('equipe')} className="navLink">Equipe</a>
-          <a onClick={() => setCurrent('noticias')} className="navLink">Notícias</a>
-          <a onClick={() => setCurrent('login')} className="navLink">Acesso Remoto</a>
+          <a onClick={() => setCurrent('home')} className={current == 'home' ? 'navLinkSelected' : "navLink"}>Página Inicial</a>
+          <a onClick={() => setCurrent('escritorio')} className={current == 'escritorio' ? 'navLinkSelected' : "navLink"}>Escritório</a>
+          <a onClick={() => setCurrent('areas')} className={current == 'areas' ? 'navLinkSelected' : "navLink"}>Atuação</a>
+          <a onClick={() => setCurrent('equipe')} className={current == 'equipe' ? 'navLinkSelected' : "navLink"}>Equipe</a>
+          <a onClick={() => setCurrent('noticias')} className={current == 'noticias' ? 'navLinkSelected' : "navLink"}>Notícias</a>
+          <a onClick={() => setCurrent('login')} className="navLink">Acesso →</a>
         </div>
       </div>        
     </div>
