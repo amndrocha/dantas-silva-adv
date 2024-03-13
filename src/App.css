@@ -38,7 +38,6 @@ body {
 p {
   margin: 0;
   padding: 0;
-  text-align: justify;
   @media only screen and (max-width: 720px) {
       font-size: 18px;
   }
@@ -413,7 +412,7 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  outline: 3px solid #408080;
+  outline: 2px solid #408080;
   width: 210px;
   height: fit-content;
   @media only screen and (max-width: 720px) {
@@ -461,7 +460,7 @@ textarea {
   @media only screen and (max-width: 720px) {
     height: 200px;
     width: 100%;
-    
+    margin-bottom: 20px;    
   }
 }
 
@@ -473,10 +472,7 @@ textarea {
     margin: 0 100px;  
   }
   @media only screen and (max-width: 860px) {
-    margin: 0 50px;  
-  }
-  @media only screen and (max-width: 400px) {
-    margin: 0 20px;  
+    margin: 0 5vw;  
   }
 }
 
@@ -485,6 +481,22 @@ textarea {
   margin-right: 20px;
   width: 40%;
   height: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
+  object-position: center;
+  height: 20vw;
+  min-height: 200px;
+  width: 20vw;
+  min-width: 200px;
+  @media only screen and (max-width: 720px) {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;    
+  }
 }
 
 .colorLight {
@@ -530,12 +542,11 @@ textarea {
 .membroEquipe {
   max-width: 720px;
   width: 100%;
-  outline: 3px solid #408080;
+  outline: 2px solid #408080;
   display: flex;
   align-items: center;
   padding: 20px;
   gap: 20px;
-  border-radius: 100px;
   @media only screen and (max-width: 981px) {
       max-width: 90vw;
       padding: 10px;
@@ -543,6 +554,9 @@ textarea {
   }
   @media only screen and (max-width: 720px) {
       padding: 20px;
+  }
+  @media only screen and (max-width: 500px) {
+      padding: 10px;
   }
 }
 
@@ -670,6 +684,10 @@ textarea {
   align-items: center;
   width: 70%;
   gap: 60px;
+  @media only screen and (max-width: 981px) {
+    width: 88%;
+    margin: 0 5vw;  
+  }
 }
 
 .post {
@@ -680,7 +698,7 @@ textarea {
 }
 
 .postPreview {
-  outline: 3px solid #408080;
+  outline: 2px solid #408080;
   padding: 20px;
   width: 100%;
   height: fit-content;
@@ -688,6 +706,10 @@ textarea {
   gap: 20px;
   overflow: hidden;
   cursor: pointer;
+  @media only screen and (max-width: 720px) {
+    padding: 0px;
+    gap: 0;
+  }
 }
 
 .postPreview:hover {
@@ -698,6 +720,10 @@ textarea {
   margin-bottom: 20px;
 }
 
+.postInfoPreview {
+  width: 100%;
+  padding: 5px;
+}
 .postTitle {
   border-bottom: 1px solid grey;
 }
@@ -728,7 +754,7 @@ textarea {
 }
 
 .postPreviewImage {
-  height: 130px;
+  height: 100% !important;
   width: 130px !important;
   background-color: red;
   object-fit: cover;
@@ -755,13 +781,33 @@ textarea {
   width: 55vw;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;  
-  @media only screen and (max-width: 970px) {
-    width: 40vw;
+  overflow: clip;  
+  background-color: red;
+  @media only screen and (max-width: 981px) {
+    width: 70vw;
+  }
+  @media only screen and (max-width: 881px) {
+    width: 67vw;
+  }
+  @media only screen and (max-width: 685px) {
+    width: 65vw;
+  }
+  @media only screen and (max-width: 645px) {
+    width: 63vw;
+  }
+  @media only screen and (max-width: 617px) {
+    width: 61vw;
+  }
+  @media only screen and (max-width: 524px) {
+    width: 58vw;
+  }
+  @media only screen and (max-width: 480px) {
+    width: 55vw;
   }
 }
 .paragraph {
   color: #0A3200;
+  text-align: justify;
   margin-bottom: 10px;
 }
 

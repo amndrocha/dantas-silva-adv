@@ -165,7 +165,7 @@ function Noticias() {
                   <h1 className="postTitle">{newPost.title == '' ? 'Título' : newPost.title}</h1>
                   <h2>{getDate('')}</h2>                    
               </div>
-              <div className="postBox"><img className="postImage" src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
+              <div className="postBox"><img className="floatImage" src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
           </div>          
         </div>
         <div className="buttonWrapper">
@@ -179,7 +179,8 @@ function Noticias() {
         </div>        
       </div>
 
-      <div className="gap" style={{height: '30px'}}></div>
+      <div className="gap" style={{height: '0'}}></div>
+      <h1 className={newPost.id == '' ? "title" : 'none'}>Notícias</h1>
       <div className={newPost.id !== '' || authorized ? "buttonWrapper" : 'none'}>
         <button className={newPost.id == '' ? 'none' : 'adminBtn'} onClick={closeModal}>Voltar</button>
         <button onClick={deletePost}
@@ -191,27 +192,25 @@ function Noticias() {
   
       <div className='posts'>
 
-        <div className={newPost.id == '' ? 'none' : 'post'} style={{width: '100%', height: 'fit-content', overflow: "hidden"}}>
+        <div className={newPost.id == '' ? 'none' : 'post'} style={{width: '100%', height: 'fit-content', overflow: "hidden", marginBottom: '20px'}}>
             <div className="postInfo">
                 <h1 className="postTitle">{newPost.title}</h1>
                 <h2>{newPost.createdAt}</h2>                    
             </div>
-            <div className="postBox"><img className="postImage" src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
+            <div className="postBox"><img className="floatImage" src={newPost.image}/><span className="textSpan" dangerouslySetInnerHTML={{__html: newPost.content}}></span></div>
         </div>
 
         {posts.map(post => (
           <div  className={newPost.id == '' ? 'postPreview' : 'none'} key={post.id}
           onClick={() => setNewPost({id: post.id, title: post.title, content: post.content, image: post.image, createdAt: post.createdAt,})}>
             <img className="postPreviewImage" src={post.image ? post.image : './img/blank.png'}/>
-            <div style={{width: '100%'}}>
-              <div className="postInfo">
-                  <h1 className="postTitle">{post.title}</h1>
-                  <h2>{getDate(post.createdAt)}</h2>                    
-              </div>
-              <div className="postBoxPreview"><span className="textSpanPreview" dangerouslySetInnerHTML={{__html: post.content}}></span></div>                
-            </div>
+            <div className="postInfoPreview">
+              <h2 className="name" style={{borderBottom: '1px solid grey'}}>{post.title}</h2>
+              <h3 >{getDate(post.createdAt)}</h3>
+              <div className="postBoxPreview"><span className="textSpanPreview" dangerouslySetInnerHTML={{__html: post.content}}></span></div>                    
+            </div>  
         </div>
-        ))}        
+        ))}      
       </div>
     </div>
   );
