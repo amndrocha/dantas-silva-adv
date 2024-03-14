@@ -56,15 +56,17 @@ function CardOverlay({data}) {
 
                 <div className="card-infos">
 
-                    <div className={member.mobile ? 'card-info-section' : 'none'}>
+                    <div className='card-info-section'>
                         <div className='card-info-icon-wrapper'>
                             <img className='card-info-icon'src='/img/telephone.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className='card-info-text'>+55 {member.mobile}</div>
-                            <a href={whatsapp} className="card-info-text">
-                                WhatsApp<img className='card-icon' src="/img/link.svg"/>
-                            </a>
+                            <div className='card-info-text'>
+                                {member.mobile ? member.mobile : '+55 (21) 3078-3363'} <span className={member.mobile ? 'visible' : 'none'}>- <a href={whatsapp} className={member.mobile ? "card-info-text" : 'none'}>
+                                WhatsApp<img className='card-icon' src="/img/link.svg"/></a></span>
+                            </div>
+                            <div className="card-info-text">{member.contact}</div>
+                            
                         </div>
                     </div>
 
@@ -73,9 +75,9 @@ function CardOverlay({data}) {
                             <img className='card-info-icon'src='/img/web.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className="card-info-text">{member.contact}</div>
-                            <a className="card-info-text" onClick={close}>
-                                Visite nosso site<img className='card-icon' src="/img/link.svg"/>
+                            <div className="card-info-text">Visite nosso site:</div>
+                            <a className="card-info-text" onClick={() => navigate('/')}>
+                                wwww.dantassilva.com.br<img className='card-icon' src="/img/link.svg"/>
                             </a>
                         </div>
                     </div>
@@ -94,12 +96,16 @@ function CardOverlay({data}) {
                                     </a>
                             </div>
 
+
+
                             <a className="card-info-text" style={{fontSize: '12px'}}
                             href="https://www.google.com/maps/place/R.+da+Quitanda,+60+-+12º+andar+-+Centro,+Rio+de+Janeiro+-+RJ,+20011-030/@-22.90355,-43.1792889,17z/data=!3m1!4b1!4m5!3m4!1s0x997f5f1b1adb07:0x9ebef1fb5678764!8m2!3d-22.903555!4d-43.176714?entry=tts" target="_blank"></a>
+
                         </div>
                     </div>
                 </div>
-                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>dantassilva.net.br/card/{member.id}</div>
+                
+                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>dantassilva.com.br/card/{member.id}</div>
             </div>        
         </div>
     );

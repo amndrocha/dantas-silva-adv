@@ -67,15 +67,17 @@ function Card() {
 
                 <div className="card-infos">
 
-                    <div className={member.mobile ? 'card-info-section' : 'none'}>
+                    <div className='card-info-section'>
                         <div className='card-info-icon-wrapper'>
                             <img className='card-info-icon'src='/img/telephone.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className='card-info-text'>{member.mobile}</div>
-                            <a href={whatsapp} className="card-info-text">
-                                WhatsApp<img className='card-icon' src="/img/link.svg"/>
-                            </a>
+                            <div className='card-info-text'>
+                                {member.mobile ? member.mobile : '+55 (21) 3078-3363'} <span className={member.mobile ? 'visible' : 'none'}>- <a href={whatsapp} className={member.mobile ? "card-info-text" : 'none'}>
+                                WhatsApp<img className='card-icon' src="/img/link.svg"/></a></span>
+                            </div>
+                            <div className="card-info-text">{member.contact}</div>
+                            
                         </div>
                     </div>
 
@@ -84,9 +86,9 @@ function Card() {
                             <img className='card-info-icon'src='/img/web.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className="card-info-text">{member.contact}</div>
+                            <div className="card-info-text">Visite nosso site:</div>
                             <a className="card-info-text" onClick={() => navigate('/')}>
-                                Visite nosso site<img className='card-icon' src="/img/link.svg"/>
+                                wwww.dantassilva.com.br<img className='card-icon' src="/img/link.svg"/>
                             </a>
                         </div>
                     </div>
@@ -113,7 +115,6 @@ function Card() {
                         </div>
                     </div>
                 </div>
-                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>{window.location.href}</div>
             </div>   
             <div className='blur'></div>     
         </div>
