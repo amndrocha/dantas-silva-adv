@@ -27,6 +27,12 @@ function CardOverlay({data}) {
         window.dispatchEvent(new Event('close-card'));
     }
 
+    const copyURL = (e) => {   
+        e.preventDefault();     
+        //navigator.clipboard.writeText('dantassilva.net/card/'+member.id);
+        //alert('O link foi copiado para a área de transferência!');
+    }
+
     return (
         <div className={data ? "card-page opacity-change" : 'none'} style={{backgroundColor: '#000000e4'}}
         onClick={close}>
@@ -39,7 +45,7 @@ function CardOverlay({data}) {
                 </div>
 
 
-                <div className='card-avatar'>
+                <div className='card-avatar' onClick={(e) => copyURL(e)}>
                     <img className='card-avatar-image' src={member.image ? member.image : '/img/icon.png'}/> 
                 </div>
 
@@ -93,7 +99,7 @@ function CardOverlay({data}) {
                         </div>
                     </div>
                 </div>
-                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>{window.location.href}</div>
+                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>dantassilva.net.br/card/{member.id}</div>
             </div>        
         </div>
     );

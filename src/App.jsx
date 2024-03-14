@@ -11,7 +11,6 @@ function App() {
   const [images, setImages] = useState([]);
   const [areas, setAreas] = useState([]);
   const [current, setCurrent] = useState('home');
-  const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isProcessing, setIsProcessing] = useState(false); 
   const [openMenu, setOpenMenu] = useState(false); 
 
@@ -65,6 +64,13 @@ function App() {
     url: '',
   });
 
+  const [currentArea, setCurrentArea] = useState({
+    id: '',
+    title: '',
+    description: '',
+    view: false,
+  });
+
   const getUrl = (id) => {
     const image = images.find(img => img.id === id);
     return image ? image.url : '';
@@ -82,7 +88,6 @@ function App() {
       id: id,
       url: url,
     });
-    setIsModalOpen(true);
   }
 
   const closeModal = () => {
@@ -90,8 +95,36 @@ function App() {
       id: '',
       url: '',
     });    
-    setIsModalOpen(false);
+    setCurrentArea({
+      id: '',
+      title: '',
+      description: '',
+      view: false
+    });    
   }
+  const changeArea = async () => {
+    try {
+      setIsProcessing(true);
+      const { data, error } = await supabase
+        .from('areas')
+        .update({
+          title: currentArea.title,
+          description: currentArea.description,
+        })
+        .eq('id', currentArea.id);
+  
+      if (error) {
+        console.error('Error updating image:', error.message);
+      } else {
+        getAreas();
+        console.log('Area updated successfully:', data);
+        setIsProcessing(false);
+        setCurrentArea({...currentArea, view: true});
+      }
+    } catch (error) {
+      console.error('Error updating image:', error.message);
+    }
+  };
 
   const changeImage = async () => {
     try {
@@ -174,20 +207,20 @@ function App() {
                       className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
-                        <li>{areas[0].title}</li><hr/>
-                        <li>{areas[1].title}</li><hr/>
-                        <li>{areas[2].title}</li><hr/>
-                        <li>{areas[3].title}</li><hr/>
-                        <li>{areas[4].title}</li>
+                        <li onClick={() => setCurrentArea({id: 0, title: areas[0].title, description: areas[0].description, view: true})}>{areas[0].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 1, title: areas[1].title, description: areas[1].description, view: true})}>{areas[1].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 2, title: areas[2].title, description: areas[2].description, view: true})}>{areas[2].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 3, title: areas[3].title, description: areas[3].description, view: true})}>{areas[3].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 4, title: areas[4].title, description: areas[4].description, view: true})}>{areas[4].title}</li>
                     </ul>
                 </div>
                 <div id="areasColumn2" className="areasColumn">
                     <ul>
-                        <li>{areas[5].title}</li><hr/>
-                        <li>{areas[6].title}</li><hr/>
-                        <li>{areas[7].title}</li><hr/>
-                        <li>{areas[8].title}</li><hr/>
-                        <li>{areas[9].title}</li>
+                        <li onClick={() => setCurrentArea({id: 5, title: areas[5].title, description: areas[5].description, view: true})}>{areas[5].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 6, title: areas[6].title, description: areas[6].description, view: true})}>{areas[6].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 7, title: areas[7].title, description: areas[7].description, view: true})}>{areas[7].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 8, title: areas[8].title, description: areas[8].description, view: true})}>{areas[8].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 9, title: areas[9].title, description: areas[9].description, view: true})}>{areas[9].title}</li>
                     </ul>
                     <div id="areasImageBox2" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox2")+")"}}>
                       <button onClick={() => openModal("areasImageBox2")}
@@ -202,11 +235,11 @@ function App() {
                       className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
-                        <li>{areas[10].title}</li><hr/>
-                        <li>{areas[11].title}</li><hr/>
-                        <li>{areas[12].title}</li><hr/>
-                        <li>{areas[13].title}</li><hr/>
-                        <li>{areas[14].title}</li>
+                        <li onClick={() => setCurrentArea({id: 10, title: areas[10].title, description: areas[10].description, view: true})}>{areas[10].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 11, title: areas[11].title, description: areas[11].description, view: true})}>{areas[11].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 12, title: areas[12].title, description: areas[12].description, view: true})}>{areas[12].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 13, title: areas[13].title, description: areas[13].description, view: true})}>{areas[13].title}</li><hr/>
+                        <li onClick={() => setCurrentArea({id: 14, title: areas[14].title, description: areas[14].description, view: true})}>{areas[14].title}</li>
                     </ul>
                 </div>
             </div>
@@ -281,13 +314,13 @@ function App() {
 
 
 
-      <div className={isModalOpen ? 'modal' : 'none'}>
+      <div className={currentImage.id !== '' ? 'modal' : 'none'}>
         <div className="modalBox">
           <form className="editMemberForm">
             <label htmlFor="contact">URL da foto:
             <input id="image" type="text" onChange={(e) => setCurrentImage({...currentImage, url: e.target.value})}
             value={currentImage.url}/></label>
-        </form>
+          </form>
 
           <div className="buttonWrapper">
             <button onClick={closeModal}
@@ -299,7 +332,44 @@ function App() {
           </div>      
         </div>
       </div>
-      
+
+      <div className={currentArea.id !== '' && currentArea.view === false ? 'modal' : 'none'}>
+        <div className="modalBox">
+          <form className="editMemberForm">
+            <label htmlFor="contact">Título:
+            <input id="image" type="text" onChange={(e) => setCurrentArea({...currentArea, title: e.target.value})}
+            value={currentArea.title}/></label>
+            <label htmlFor="contact">Descrição:
+            <input id="image" type="text" onChange={(e) => setCurrentArea({...currentArea, description: e.target.value})}
+            value={currentArea.description}/></label>
+          </form>
+
+          <div className="buttonWrapper">
+            <button onClick={closeModal}
+            className={authorized ? 'adminBtn' : 'none'}>Cancelar</button>
+            <button  className={authorized ? 'adminBtn' : 'none'} onClick={changeArea}
+            disabled={isProcessing}>{isProcessing ? 'Salvando..' : 'Salvar alterações'}
+            </button>              
+          </div>      
+        </div>
+      </div>
+
+      <div className={currentArea.id !== '' && currentArea.view ? 'modal' : 'none'}>
+        
+        <div className="modalBox">
+          <div>{currentArea.title}</div>
+
+          <div>{currentArea.description}</div>
+
+          <div className="buttonWrapper">
+            <button onClick={closeModal}
+            className='adminBtn'>Voltar</button>
+            <button onClick={() => setCurrentArea({...currentArea, view: false})}
+            className={authorized ? 'adminBtn' : 'none'}>Editar</button> 
+          </div>      
+        </div>
+      </div>
+
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
 
       <div className={openMenu ? "mobileMenu" : 'none'}>
