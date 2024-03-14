@@ -29,7 +29,7 @@ export default function Account() {
       </div>
 
       <div>
-        <button className="button block" type="button" onClick={handleSignOut}>
+        <button className="adminBtn" type="button" onClick={handleSignOut}>
           Sign Out
         </button>
       </div>

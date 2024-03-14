@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 function Equipe() {
   const navigate = useNavigate();
   const [equipe, setEquipe] = useState([]); 
-  const [authorized, setAuthorized] = useState(false);
   const [current, setCurrent] = useState({
     id: '',
     category: '',
@@ -14,7 +13,18 @@ function Equipe() {
     job: '',
     action: '',
     image: '',
-  }); 
+  });
+
+  const [authorized, setAuthorized] = useState(null);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthorized(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthorized(session)
+    })
+  }, [])
 
   async function getEquipe() {
     const { data } = await supabase.from("equipe").select();

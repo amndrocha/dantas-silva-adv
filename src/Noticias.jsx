@@ -5,7 +5,6 @@ function Noticias() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [preview, setPreview] = useState(false);
   const today = new Date().toISOString(); 
-  const [authorized, setAuthorized] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({
@@ -16,6 +15,16 @@ function Noticias() {
     image: ''
   });
 
+  const [authorized, setAuthorized] = useState(null);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthorized(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthorized(session)
+    })
+  }, [])
   
 
   async function getPosts() {

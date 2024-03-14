@@ -12,9 +12,13 @@
 }
 
 .card-page a {
-    text-decoration: underline;
-    color: var(--main-darker);
+    text-decoration: none;
+    color: var(--main-highlight);
     cursor: pointer;
+}
+
+.card-page a:hover {
+    text-decoration: underline;
 }
 
 .card-front {

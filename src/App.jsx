@@ -12,9 +12,19 @@ function App() {
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState('home');
   const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [isProcessing, setIsProcessing] = useState(false);  
-  const [authorized, setAuthorized] = useState(false);  
+  const [isProcessing, setIsProcessing] = useState(false); 
   const [openMenu, setOpenMenu] = useState(false); 
+
+  const [authorized, setAuthorized] = useState(null);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthorized(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthorized(session)
+    })
+  }, [])
 
   async function getImages() {
     const { data } = await supabase.from("images").select();
