@@ -12,7 +12,6 @@ function Card() {
         contact: '',
         image: ''
     }); 
-    const [mobile, setMobile] = useState(''); 
     const [whatsapp, setWhatsapp] = useState(''); 
   
     function formatMobile() {
@@ -37,15 +36,17 @@ function Card() {
         getMember();
     }, []);
 
-    useEffect(() => {
+    useEffect(() => {        
         if (member.mobile) {
-            formatMobile();
+            let number = member.mobile || '(21) 99918-6842';
+            number = number.replace(/\D/g, '')
+            setWhatsapp('https://wa.me/+55'+number);
         }
     }, [member]);
 
     return (
         <div className="card-page">
-            <div className="card-front">
+            <div className="card-front slow-opacity-change">
 
                 <div className="card-header">
                     <div className='card-head'>
@@ -57,6 +58,7 @@ function Card() {
                 <div className='card-avatar'>
                     <img className='card-avatar-image' src={member.image ? member.image : '/img/icon.png'}/> 
                 </div>
+                <div className='card-avatar-cover inverse-opacity-change'></div>
 
                 <div className="card-title">
                     <div className="card-name">{member.name}</div>
@@ -70,7 +72,7 @@ function Card() {
                             <img className='card-info-icon'src='/img/telephone.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className='card-info-text'>{mobile}</div>
+                            <div className='card-info-text'>{member.mobile}</div>
                             <a href={whatsapp} className="card-info-text">
                                 WhatsApp<img className='card-icon' src="/img/link.svg"/>
                             </a>
@@ -112,7 +114,8 @@ function Card() {
                     </div>
                 </div>
                 <div style={{fontSize: '20px', color: 'var(--background-light)'}}>{window.location.href}</div>
-            </div>        
+            </div>   
+            <div className='blur'></div>     
         </div>
     );
 }

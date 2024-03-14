@@ -1,6 +1,20 @@
 @keyframes opacity-change {
-    0%   { background-color: transparent; }
-    100% { background-color: #000000e4; }
+    0%   { 
+        opacity: 0;
+        transform: translateY(100%);
+     }
+     30%  { transform: translateY(-100px); }
+     50%  { transform: translateY(0); }
+    100% { 
+        opacity: 1;
+        transform: translateY(0)
+     }
+}
+
+@keyframes inverse-opacity-change {
+    0%   { opacity: 1; }
+    10%   { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 @keyframes bounce {
@@ -9,6 +23,7 @@
     50%  { transform: translateY(0); }
     100% { transform: translateY(0); }
 }
+
 
 .bounce {
     animation-name: bounce;
@@ -21,6 +36,19 @@
     animation-timing-function: ease;
     animation-duration: 0.5s;
 }
+
+.slow-opacity-change {
+    animation-name: opacity-change;
+    animation-timing-function: ease;
+    animation-duration: 3s;
+}
+
+.inverse-opacity-change {
+    animation-name: inverse-opacity-change;
+    animation-timing-function: ease;
+    animation-duration: 3s;
+}
+
 
 .card-page {
     position: fixed;
@@ -97,7 +125,18 @@
     justify-content: center;
 }
 
+.card-avatar-cover {
+    position: absolute;
+    margin-top: 100px;
+    border-radius: 50%;
+    height: 140px;
+    width: 140px;
+    background-color: var(--background-light);
+    opacity: 0;
+}
+
 .card-title {
+    min-height: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -14,11 +14,9 @@ function CardOverlay({data}) {
     useEffect(() => {
         if (data) {
             setMember(data)
-            if (member.mobile) {
-                let number = member.mobile;
-                number = number.replace(/\D/g, '')
-                setWhatsapp('https://wa.me/+55'+number);
-            }
+            let number = data.mobile || '(21) 99918-6842';
+            number = number.replace(/\D/g, '')
+            setWhatsapp('https://wa.me/+55'+number);
         }
     }, [data]);
 
