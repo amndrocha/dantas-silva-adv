@@ -99,7 +99,7 @@ function CardOverlay({data}) {
                         </div>
                     </div>
                 </div>
-                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>dantassilva.net.br/card/{member.id}</div>
+                <div style={{fontSize: '20px', color: 'var(--background-light)'}}>dantassilva.com.br/card/{member.id}</div>
             </div>        
         </div>
     );
