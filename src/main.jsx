@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/card/:id" element={<Card />} /> {/* Updated to use Card component */}
+        <Route path="/card/:id" element={<Card/>} /> {/* Updated to use Card component */}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

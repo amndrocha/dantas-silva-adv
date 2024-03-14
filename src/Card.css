@@ -1,5 +1,31 @@
+@keyframes opacity-change {
+    0%   { background-color: transparent; }
+    100% { background-color: #000000e4; }
+}
+
+@keyframes bounce {
+    0%   { transform: translateY(100%); }
+    30%  { transform: translateY(-100px); }
+    50%  { transform: translateY(0); }
+    100% { transform: translateY(0); }
+}
+
+.bounce {
+    animation-name: bounce;
+    animation-timing-function: ease;
+    animation-duration: 1s;
+}
+
+.opacity-change {
+    animation-name: opacity-change;
+    animation-timing-function: ease;
+    animation-duration: 0.5s;
+}
+
 .card-page {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -9,6 +35,7 @@
     font-size: 10px;
     background-color: black;
     font-family: 'Garamond';
+    z-index: 1;
 }
 
 .card-page a {
@@ -22,6 +49,7 @@
 }
 
 .card-front {
+    position: absolute;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -112,7 +140,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 36.8px;
     width: fit-content;
     background-color: var(--main);
     margin-right: 10px;

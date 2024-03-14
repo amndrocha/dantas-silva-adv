@@ -30,22 +30,10 @@ function Noticias() {
   async function getPosts() {
     const { data } = await supabase.from("posts").select();
     setPosts(data);    
-    //console.log(posts);
-    //console.log(newPost);
-  }
-  
-  async function getUser() {    
-    const { data, error } = await supabase.auth.getUserIdentities()
-    if (data) {
-      setAuthorized(true);
-    } else {
-      setAuthorized(false);
-    }
   }
 
   useEffect(() => {
     getPosts();
-    getUser();
   }, []);
 
   const getDate = (date) => {
@@ -122,7 +110,6 @@ function Noticias() {
   };
 
   const modifyPost = async () => {
-    console.log(newPost);
     try {
       setIsProcessing(true);
       const { data, error } = await supabase

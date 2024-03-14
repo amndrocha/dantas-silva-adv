@@ -1,18 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { useEffect, useState } from 'react';
 import './Card.css';
 
-function Card() {
-    const navigate = useNavigate();
-    let { id } = useParams();
+function CardOverlay({data}) {
+    const [mobile, setMobile] = useState(''); 
     const [member, setMember] = useState({
         name: '',
-        job: '',
         contact: '',
-        image: ''
+        job: '',
     }); 
-    const [mobile, setMobile] = useState(''); 
     const [whatsapp, setWhatsapp] = useState(''); 
   
     function formatMobile() {
@@ -24,28 +20,24 @@ function Card() {
         setWhatsapp(link);
     }
 
-    async function getMember() {
-        const { data } = await supabase.from("equipe").select();
-        let foundMember = data.find(member => member.id == id);
-        if (foundMember) {
-            setMember(foundMember);
+
+    useEffect(() => {
+        if (data) {
+            setMember(data)
+            if (member.mobile) {
+                formatMobile();
+            }
         }
+    }, [data]);
+
+    const preventClick = (e) => {
+        e.stopPropagation();
     }
-    
-
-    useEffect(() => {
-        getMember();
-    }, []);
-
-    useEffect(() => {
-        if (member.mobile) {
-            formatMobile();
-        }
-    }, [member]);
 
     return (
-        <div className="card-page">
-            <div className="card-front">
+        <div className={data ? "card-page opacity-change" : 'none'} style={{backgroundColor: '#000000e4'}}
+        onClick={() => window.dispatchEvent(new Event('close-card'))}>
+            <div className={data ? "card-front bounce" : 'none'} onClick={(e) => preventClick(e)}>
 
                 <div className="card-header">
                     <div className='card-head'>
@@ -103,11 +95,8 @@ function Card() {
                                     </a>
                             </div>
 
-
-
                             <a className="card-info-text" style={{fontSize: '12px'}}
                             href="https://www.google.com/maps/place/R.+da+Quitanda,+60+-+12º+andar+-+Centro,+Rio+de+Janeiro+-+RJ,+20011-030/@-22.90355,-43.1792889,17z/data=!3m1!4b1!4m5!3m4!1s0x997f5f1b1adb07:0x9ebef1fb5678764!8m2!3d-22.903555!4d-43.176714?entry=tts" target="_blank"></a>
-
                         </div>
                     </div>
                 </div>
@@ -117,4 +106,4 @@ function Card() {
     );
 }
 
-export default Card;
+export default CardOverlay;

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import Equipe from "./Equipe";
 import './App.css';
-import Login from "./Login";
 import { supabase } from './supabaseClient';
-import Escritorio from "./Escritorio";
 import Noticias from "./Noticias";
+import Auth from "./Auth";
 
 function App() {
 
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
+  const [areas, setAreas] = useState([]);
   const [current, setCurrent] = useState('home');
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isProcessing, setIsProcessing] = useState(false); 
@@ -32,18 +32,14 @@ function App() {
     setLoading(false);
   }
 
-  async function getUser() {    
-    const { data, error } = await supabase.auth.getUserIdentities()
-    if (data) {
-      setAuthorized(true);
-    } else {
-      setAuthorized(false);
-    }
+  async function getAreas() {
+    const { data } = await supabase.from("areas").select();
+    setAreas(data);
   }
 
   useEffect(() => {
     getImages();
-    getUser();
+    getAreas();
   }, []);
 
   useEffect(() => {
@@ -58,6 +54,10 @@ function App() {
 
   window.addEventListener('login', () => {
     setCurrent('login');
+  });
+
+  window.addEventListener('logged', () => {
+    setCurrent('home');
   });
 
   const [currentImage, setCurrentImage] = useState({
@@ -174,20 +174,20 @@ function App() {
                       className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox1') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
-                        <li>Seguro e Capitalização</li><hr/>
-                        <li>Transporte</li><hr/>
-                        <li>Responsabilidade Civil</li><hr/>
-                        <li>Acidente de Trânsito</li><hr/>
-                        <li>Energia</li>
+                        <li>{areas[0].title}</li><hr/>
+                        <li>{areas[1].title}</li><hr/>
+                        <li>{areas[2].title}</li><hr/>
+                        <li>{areas[3].title}</li><hr/>
+                        <li>{areas[4].title}</li>
                     </ul>
                 </div>
                 <div id="areasColumn2" className="areasColumn">
                     <ul>
-                        <li>Consumidor</li><hr/>
-                        <li>Bancário</li><hr/>
-                        <li>Cobrança</li><hr/>
-                        <li>Trabalhista</li><hr/>
-                        <li>Imobiliário</li>
+                        <li>{areas[5].title}</li><hr/>
+                        <li>{areas[6].title}</li><hr/>
+                        <li>{areas[7].title}</li><hr/>
+                        <li>{areas[8].title}</li><hr/>
+                        <li>{areas[9].title}</li>
                     </ul>
                     <div id="areasImageBox2" className="areasImageBox" style={{backgroundImage: "url("+getUrl("areasImageBox2")+")"}}>
                       <button onClick={() => openModal("areasImageBox2")}
@@ -202,11 +202,11 @@ function App() {
                       className={authorized ? 'adminBtn' : 'none'}>{getUrl('areasImageBox3') === '' ? 'Incluir foto' : 'Alterar'}</button>
                     </div>
                     <ul>
-                        <li>Empresarial</li><hr/>
-                        <li>Contratual</li><hr/>
-                        <li>Ambiental</li><hr/>
-                        <li>Família</li><hr/>
-                        <li>Órfãos e sucessões</li>
+                        <li>{areas[10].title}</li><hr/>
+                        <li>{areas[11].title}</li><hr/>
+                        <li>{areas[12].title}</li><hr/>
+                        <li>{areas[13].title}</li><hr/>
+                        <li>{areas[14].title}</li>
                     </ul>
                 </div>
             </div>
@@ -216,7 +216,7 @@ function App() {
     } else if (current === "login") {
       return (
         <div className="middle">
-          <Login/>
+          <Auth/>
         </div>
       )
     }

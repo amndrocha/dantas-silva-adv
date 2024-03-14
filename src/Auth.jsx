@@ -22,7 +22,8 @@ export default function Auth() {
     }
 
     setLoading(false);
-    location.reload();
+    window.dispatchEvent(new Event('logged'));
+
   }
 
   return (

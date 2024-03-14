@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from './supabaseClient';
 import { useNavigate } from "react-router-dom";
+import CardOverlay from "./CardOverlay";
 
 function Equipe() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function Equipe() {
     action: '',
     image: '',
   });
+  const [card, setCard] = useState(null); 
 
   const [authorized, setAuthorized] = useState(null);
   useEffect(() => {
@@ -31,19 +33,13 @@ function Equipe() {
     setEquipe(data.sort((a, b) => a.order - b.order));
   }
 
-  async function getUser() {    
-    const { data, error } = await supabase.auth.getUserIdentities();
-    if (data) {
-      setAuthorized(true);
-    } else {
-      setAuthorized(false);
-    }
-  }
-
   useEffect(() => {
     getEquipe();
-    getUser();
   }, []);
+
+  window.addEventListener('close-card', () => {
+    setCard(null);
+  });
 
   const reorderEquipe = async () => {
     let categories = ['Sócio', 'Jurídico', 'Administrativo'];
@@ -238,6 +234,11 @@ function Equipe() {
     reorderEquipe();
   };
 
+  const handleSignOut = () => {
+    supabase.auth.signOut();
+    localStorage.clear();
+  }
+
   const isMovingAllowed = (member, direction) => {
     const sameCategoryMembers = equipe.filter(m => m.category === member.category);
     sameCategoryMembers.sort((a, b) => a.order - b.order);
@@ -302,6 +303,7 @@ function Equipe() {
   
   return (
     <div id="equipeContent" className="middle">
+      <CardOverlay data={card}/>
       <div className="gap"></div>
       <div className={authorized ? 'buttonWrapper' : 'none'}>
         <button className="adminBtn" onClick={logEquipe}>Log</button>
@@ -373,7 +375,7 @@ function Equipe() {
                 <div className="membroEquipe">
                   <img className='equipeImageReplacer' src={member.image}/>
                   <div className="membroInfo">
-                    <h2 className="name" onClick={() => navigate('/card/'+member.id)}>{member.name}</h2>
+                    <h2 className="name" onClick={() => setCard(member)}>{member.name}</h2>
                     <h3 className="job">{member.job}</h3>
                     <p className="contact">{member.contact}</p>
                     <div className={authorized ? 'buttonWrapper' : 'none'}>
@@ -397,7 +399,8 @@ function Equipe() {
           })}
         </div>)
       })}
-      <button className="adminBtn" onClick={() => window.dispatchEvent(new Event('login'))}>Login</button>
+      <button className={authorized ? 'none' : "adminBtn"} onClick={() => window.dispatchEvent(new Event('login'))}>Login</button>
+      <button className={authorized ? "adminBtn" : 'none'} onClick={handleSignOut}>Logout</button>
       <div className="gap"></div>
     </div>
   );
