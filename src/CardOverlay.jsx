@@ -1,4 +1,3 @@
-import { supabase } from './supabaseClient';
 import { useEffect, useState } from 'react';
 import './Card.css';
 
@@ -23,10 +22,14 @@ function CardOverlay({data}) {
     const preventClick = (e) => {
         e.stopPropagation();
     }
+    
+    const close = () => {
+        window.dispatchEvent(new Event('close-card'));
+    }
 
     return (
         <div className={data ? "card-page opacity-change" : 'none'} style={{backgroundColor: '#000000e4'}}
-        onClick={() => window.dispatchEvent(new Event('close-card'))}>
+        onClick={close}>
             <div className={data ? "card-front bounce" : 'none'} onClick={(e) => preventClick(e)}>
 
                 <div className="card-header">
@@ -65,7 +68,7 @@ function CardOverlay({data}) {
                         </div>
                         <div className='card-info'>
                             <div className="card-info-text">{member.contact}</div>
-                            <a className="card-info-text" onClick={() => navigate('/')}>
+                            <a className="card-info-text" onClick={close}>
                                 Visite nosso site<img className='card-icon' src="/img/link.svg"/>
                             </a>
                         </div>
