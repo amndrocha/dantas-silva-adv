@@ -306,7 +306,7 @@ function App() {
             </a>
             <div className="desktopRow">
               <div className="addressItem" style={{textAlign: "center"}}>+55 (21) 3078-3363</div>
-              <div className="addressItem" style={{textAlign: "center"}}>advogados@dantassilva.com.br </div>
+              <div className="addressItem" style={{textAlign: "center"}}>advogados@dantassilva.net.br </div>
             </div>
             <div id="copyright"><b style={{color: 'rgb(255, 255, 255, 0.4)'}}>Copyright</b> © Dantas Silva Advogados Associados. Todos os direitos reservados.</div>
         </div>        
