@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from './supabaseClient';
+import { useNavigate } from "react-router-dom";
 
 function Equipe() {
+  const navigate = useNavigate();
   const [equipe, setEquipe] = useState([]); 
   const [authorized, setAuthorized] = useState(false);
   const [current, setCurrent] = useState({
@@ -361,7 +363,7 @@ function Equipe() {
                 <div className="membroEquipe">
                   <img className={member.image === '' ? 'equipeImageReplacer' : "equipeImage"} src={member.image}/>
                   <div className="membroInfo">
-                    <h2 className="name">{member.name}</h2>
+                    <h2 className="name" onClick={() => navigate('/card/'+member.id)}>{member.name}</h2>
                     <h3 className="job">{member.job}</h3>
                     <p className="contact">{member.contact}</p>
                     <div className={authorized ? 'buttonWrapper' : 'none'}>
