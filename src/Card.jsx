@@ -46,7 +46,7 @@ function Card() {
 
     return (
         <div className="card-page">
-            <div className="card-front slow-opacity-change">
+            <div className="card-front opacity-bounce">
 
                 <div className="card-header">
                     <div className='card-head'>

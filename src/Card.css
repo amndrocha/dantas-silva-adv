@@ -1,14 +1,20 @@
-@keyframes opacity-change {
+
+@keyframes opacity-change-bounce {
     0%   { 
         opacity: 0;
         transform: translateY(100%);
-     }
-     30%  { transform: translateY(-100px); }
-     50%  { transform: translateY(0); }
+    }
+    30%  { transform: translateY(-100px); }
+    50%  { transform: translateY(0); }
     100% { 
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
      }
+}
+
+@keyframes opacity-change {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @keyframes inverse-opacity-change {
@@ -39,6 +45,12 @@
 
 .slow-opacity-change {
     animation-name: opacity-change;
+    animation-timing-function: ease;
+    animation-duration: 3s;
+}
+
+.opacity-bounce {
+    animation-name: opacity-change-bounce;
     animation-timing-function: ease;
     animation-duration: 3s;
 }
