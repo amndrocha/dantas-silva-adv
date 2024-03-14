@@ -1,23 +1,32 @@
-* {
+@font-face {
+  font-family: "Garamond";
+  src: url("assets/EBGaramong.ttf");
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+* {    
+  --background-light: #e5e4e4;
+  --main: #408080;
+  --main-translucent: #4080808b;
+  --main-darker: #196565;
+  --main-darkest: #153b3b;
+  --red: #8d2c2c;
+  --red-translucent: #8d2c2c8b;
+  --gray: #4d4d4d;
+  --gray-darker: #303030;
+  --gray-translucent: #4d4d4d8b;
   margin: 0;
+  padding: 0;
+  color: var(--gray);
+  text-align: left;
   @media only screen and (max-width: 720px) {
     -ms-overflow-style: none; 
     scrollbar-width: none; 
   }
-  
-}
-
-
-@font-face {
-  font-family: "Garamond";
-  src: url("https://fonts.google.com/specimen/EB+Garamond");
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  color: #4d4d4d;
-  text-align: left;
 }
 
 
@@ -28,7 +37,7 @@ html {
 }
 
 body {
-  background-color: #e5e4e4;
+  background-color: var(--background-light);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -44,7 +53,7 @@ p {
 }
 
 h1 {
-  color: #2d5c5c;
+  color: var(--main-darker);
   @media only screen and (max-width: 720px) {
       font-size: 30px;
   }
@@ -82,7 +91,7 @@ textarea {
   position: absolute;
   width: 100%;
   height: 7.5rem;
-  outline: 5px solid #408080;
+  outline: 5px solid var(--main);
   background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("assets/pattern-black.PNG");
   background-size: 70px;
   background-position: center;
@@ -114,7 +123,7 @@ textarea {
   top: 5rem;
   width: 80%;
   margin: 0 10vw;
-  background-color: #408080;
+  background-color: var(--main);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -141,7 +150,7 @@ textarea {
 }
 
 .navLink {
-  color: #e5e4e4;
+  color: var(--background-light);
   text-decoration: none;
   margin: 0 20px;
   cursor: pointer;
@@ -169,7 +178,7 @@ textarea {
 }
 
 .divider {
-  color: #e5e4e4;
+  color: var(--background-light);
   font-size: 20px;
   font-weight: 500;
 }
@@ -242,7 +251,7 @@ textarea {
   align-items: center;
   justify-content: flex-start;
   background-color: rgb(64, 128, 128);
-  color: #e5e4e4; 
+  color: var(--background-light); 
   box-shadow: 0 -15px 20px rgb(0, 0, 0, 0.2);
   font-size: 18px;
   @media only screen and (max-width: 720px) {
@@ -254,7 +263,7 @@ textarea {
 }
 
 #foot p {
-  color: #e5e4e4;
+  color: var(--background-light);
 }
 
 #copyright {
@@ -306,7 +315,7 @@ textarea {
 
 .addressItem {
   width: fit-content;
-  color: #e5e4e4;
+  color: var(--background-light);
 }
 
 #addressItemFixed {  
@@ -363,7 +372,7 @@ textarea {
 .mobileMenu {
   display: none;
   position: fixed;
-  background-color: #408080;
+  background-color: var(--main);
   width: 100%;
   height: 100%;
   display: flex;
@@ -418,7 +427,7 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  outline: 2px solid #408080;
+  outline: 2px solid var(--main);
   width: 210px;
   height: fit-content;
   @media only screen and (max-width: 720px) {
@@ -506,11 +515,11 @@ textarea {
 }
 
 .colorLight {
-  color: #e5e4e4;
+  color: var(--background-light);
 }
 
 .colorDark {
-  color: #0A3200;
+  color: var(--main-darkest);
 }
 
 
@@ -548,7 +557,7 @@ textarea {
 .membroEquipe {
   max-width: 720px;
   width: 100%;
-  outline: 2px solid #408080;
+  outline: 2px solid var(--main);
   display: flex;
   align-items: center;
   padding: 20px;
@@ -614,10 +623,16 @@ textarea {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+  color: var(--main-darker);
 }
 
 .name {
-  color: #0A3200;;
+  color: var(--main-darkest);
+  cursor: pointer;
+}
+
+.name:hover {
+  text-decoration: underline;
 }
 
 
@@ -674,7 +689,7 @@ textarea {
   max-width: calc(100% - 10px);
   height: calc(100% - 10px);
   max-height: calc(100% - 10px);
-  background-color: #e5e4e4;
+  background-color: var(--background-light);
   z-index: 1;
   padding: 5px;
   gap: 10px;
@@ -698,7 +713,7 @@ textarea {
 }
 
 .post {
-  outline: 2px solid #408080;
+  outline: 2px solid var(--main);
   padding: 20px;
   overflow-y: scroll;
 }
@@ -718,7 +733,7 @@ textarea {
 }
 
 .postPreview {
-  outline: 2px solid #408080;
+  outline: 2px solid var(--main);
   padding: 20px;
   width: 100%;
   height: fit-content;
@@ -733,7 +748,7 @@ textarea {
 }
 
 .postPreview:hover {
-  background-color: #40808015;
+  background-color: var(--main)15;
 }
 
 .postInfo {
@@ -825,7 +840,7 @@ textarea {
   }
 }
 .paragraph {
-  color: #0A3200;
+  color: var(--main-darkest);
   text-align: justify;
   margin-bottom: 10px;
 }
@@ -834,7 +849,7 @@ textarea {
   width: 100%;
   text-align: end;
   margin-top: 10px;
-  color: #408080;
+  color: var(--main);
   font-weight: 800;
 }
 
@@ -931,25 +946,25 @@ label {
   height: fit-content;
   width: fit-content;
   padding: 3px 5px;
-  background-color: #40808084;
-  color: #0A3200;
-  border: 1px solid #0A3200;
+  background-color: var(--main-translucent);
+  color: var(--main-darkest);
+  border: 1px solid var(--main-darkest);
   border-radius: 10px;
   cursor: pointer;
 }
 
 .adminBtn:hover {
-  background-color: #408080;
+  background-color: var(--main);
   color: white;
 }
 
 .adminBtn:active {
-  background-color: #2d5c5c;
+  background-color: var(--main-darker);
   color: white;
 }
 .adminBtn:disabled {
   background-color: #67676793;
-  color: #0A3200;
+  color: var(--main-darkest);
   cursor: default;
 }
 
@@ -958,26 +973,26 @@ label {
   height: fit-content;
   width: fit-content;
   padding: 3px 5px;
-  color: #0A3200;
-  border: 1px solid #0A3200;
+  color: var(--main-darkest);
+  border: 1px solid var(--main-darkest);
   border-radius: 10px;
   cursor: pointer;
-  background-color: rgba(193, 54, 54, 0.604);
+  background-color: var(--red-translucent);
 }
 
 .deleteBtn:hover {
-  background-color: rgb(193, 54, 54);
+  background-color: var(--red);
   color: white;
 }
 
 .deleteBtn:active {
-  background-color: rgb(137, 39, 39);
+  background-color: var(--red);
   color: white;
 }
 
 .deleteBtn:disabled {
   background-color: #67676793;
-  color: #0A3200;
+  color: var(--main-darkest);
   cursor: default;
 }
 
@@ -986,18 +1001,18 @@ label {
   align-items: center;
   font-size: 30px;
   height: 20.73px;
-  background-color: #40808084;
-  color: #0A3200;
-  border: 1px solid #0A3200;
+  background-color: var(--main-translucent);
+  color: var(--main-darkest);
+  border: 1px solid var(--main-darkest);
   cursor: pointer;
 }
 
 .addBtn:hover {
-  background-color: #408080;
+  background-color: var(--main);
   color: white;
 }
 .addBtn:active {
-  background-color: #2d5c5c;
+  background-color: var(--main-darker);
   color: white;
 }
 
@@ -1015,7 +1030,7 @@ label {
 }
 
 .modalTitle {
-  color: #2d5c5c;
+  color: var(--main-darker);
   font-size: 25px;
   font-weight: 500;
 }
@@ -1032,7 +1047,7 @@ label {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #e5e4e4;
+  background-color: var(--background-light);
   z-index: 2;
 }
 
@@ -1042,7 +1057,7 @@ label {
   padding: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #408080;
+  background: var(--main);
   --_m: 
     conic-gradient(#0000 10%,#000),
     linear-gradient(#000 0 0) content-box;

@@ -361,7 +361,7 @@ function Equipe() {
             return(
               <div className="membroEquipeWrapper" key={member.id}>
                 <div className="membroEquipe">
-                  <img className={member.image === '' ? 'equipeImageReplacer' : "equipeImage"} src={member.image}/>
+                  <img className='equipeImageReplacer' src={member.image}/>
                   <div className="membroInfo">
                     <h2 className="name" onClick={() => navigate('/card/'+member.id)}>{member.name}</h2>
                     <h3 className="job">{member.job}</h3>
