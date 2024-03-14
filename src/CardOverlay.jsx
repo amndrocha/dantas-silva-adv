@@ -3,29 +3,21 @@ import { useEffect, useState } from 'react';
 import './Card.css';
 
 function CardOverlay({data}) {
-    const [mobile, setMobile] = useState(''); 
     const [member, setMember] = useState({
         name: '',
         contact: '',
         job: '',
     }); 
-    const [whatsapp, setWhatsapp] = useState(''); 
-  
-    function formatMobile() {
-        let number = member.mobile;
-        number = number.split('-');
-        let formatedNumber = '+55 ('+number[0]+') '+number[1]+'-'+number[2];
-        let link = 'https://wa.me/+55'+number[0]+number[1]+number[2];
-        setMobile(formatedNumber);
-        setWhatsapp(link);
-    }
+    const [whatsapp, setWhatsapp] = useState('');
 
 
     useEffect(() => {
         if (data) {
             setMember(data)
             if (member.mobile) {
-                formatMobile();
+                let number = member.mobile;
+                number = number.replace(/\D/g, '')
+                setWhatsapp('https://wa.me/+55'+number);
             }
         }
     }, [data]);
@@ -62,7 +54,7 @@ function CardOverlay({data}) {
                             <img className='card-info-icon'src='/img/telephone.svg'/>
                         </div>
                         <div className='card-info'>
-                            <div className='card-info-text'>{mobile}</div>
+                            <div className='card-info-text'>+55 {member.mobile}</div>
                             <a href={whatsapp} className="card-info-text">
                                 WhatsApp<img className='card-icon' src="/img/link.svg"/>
                             </a>

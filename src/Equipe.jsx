@@ -14,6 +14,7 @@ function Equipe() {
     job: '',
     action: '',
     image: '',
+    mobile: '',
   });
   const [card, setCard] = useState(null); 
 
@@ -42,9 +43,9 @@ function Equipe() {
   });
 
   const reorderEquipe = async () => {
-    let categories = ['Sócio', 'Jurídico', 'Administrativo'];
+    let categories = ['Sócios', 'Jurídico', 'Administrativo'];
     let groupedEquipe = {
-        'Sócio': [],
+        'Sócios': [],
         'Jurídico': [],
         'Administrativo': [],
         'Others': [],
@@ -59,7 +60,7 @@ function Equipe() {
     });
 
     const reorderedEquipe = [
-        ...groupedEquipe['Sócio'],
+        ...groupedEquipe['Sócios'],
         ...groupedEquipe['Jurídico'],
         ...groupedEquipe['Administrativo'],
         ...groupedEquipe['Others']
@@ -114,6 +115,7 @@ function Equipe() {
       job: '',
       image: '',
       action: '',
+      mobile: '',
     });
   }
 
@@ -125,6 +127,7 @@ function Equipe() {
       contact: current.contact,
       job: current.job,
       image: current.image,
+      mobile: current.mobile,
       action: 'add',
     });
   }
@@ -137,6 +140,7 @@ function Equipe() {
       contact: member.contact,
       job: member.job,
       image: member.image,
+      mobile: member.mobile,
       action: 'edit',
     });
   }
@@ -149,6 +153,7 @@ function Equipe() {
       contact: current.contact,
       job: current.job,
       image: current.image,
+      mobile: current.mobile,
       action: 'delete',
     });
   }
@@ -178,60 +183,77 @@ function Equipe() {
     }
   };
 
+  function checkPhone() {
+    const pattern = /^\(\d{2}\) \d{5}-\d{4}$/;
+    return pattern.test(current.mobile);
+  }
+
   const modifyMember = async () => {
-    try {
-      setIsProcessing(true);
-      const { data, error } = await supabase
-        .from('equipe')
-        .update({
-          category: current.category,
-          name: current.name,
-          job: current.job,
-          image: current.image,
-        })
-        .eq('id', current.id);
-  
-      if (error) {
+    if (checkPhone()) {
+      try {
+        setIsProcessing(true);
+        const { data, error } = await supabase
+          .from('equipe')
+          .update({
+            category: current.category,
+            name: current.name,
+            job: current.job,
+            contact: current.contact,
+            mobile: current.mobile,
+            image: current.image,
+          })
+          .eq('id', current.id);
+    
+        if (error) {
+          console.error('Error modifying row:', error.message);
+        } else {
+          getEquipe();
+          console.log('Row modified successfully:', data);
+        }
+      } catch (error) {
         console.error('Error modifying row:', error.message);
-      } else {
-        getEquipe();
-        console.log('Row modified successfully:', data);
+      } finally {
+        setIsProcessing(false);
+        closeModal();
+        alert('Alterações salvas com sucesso.');
       }
-    } catch (error) {
-      console.error('Error modifying row:', error.message);
-    } finally {
-      setIsProcessing(false);
-      closeModal();
-      alert('Alterações salvas com sucesso.');
+    } else {
+      alert('O número de celular deve estar no modelo (21) 9xxxx-xxxx');
     }
+
   };
 
   const addMember = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('equipe')
-        .insert({
-          category: current.category,
-          name: current.name,
-          job: current.job,
-          contact: current.contact,
-          image: current.image,
-          order: equipe.length,
-        });
-  
-      if (error) {
-        console.error('Error adding '+current.name+':', error.message);
-      } else {
-        getEquipe();
-        setIsProcessing(false);
-        console.log('Successfully added '+current.name+':'+data);
-        alert(current.name+' foi adicionado(a) com sucesso.');
-        closeModal();
+    if (checkPhone()) {
+      try {
+        const { data, error } = await supabase
+          .from('equipe')
+          .insert({
+            category: current.category,
+            name: current.name,
+            job: current.job,
+            contact: current.contact,
+            mobile: current.mobile,
+            image: current.image,
+            order: equipe.length,
+          });
+    
+        if (error) {
+          console.error('Error adding '+current.name+':', error.message);
+        } else {
+          getEquipe();
+          setIsProcessing(false);
+          console.log('Successfully added '+current.name+':'+data);
+          alert(current.name+' foi adicionado(a) com sucesso.');
+          closeModal();
+        }
+      } catch (error) {
+        console.error('Error adding member:', error.message);
       }
-    } catch (error) {
-      console.error('Error adding member:', error.message);
+      reorderEquipe();      
+    } else {
+      alert('O número de celular deve estar no modelo (21) 9xxxx-xxxx');
     }
-    reorderEquipe();
   };
 
   const handleSignOut = () => {
@@ -335,7 +357,10 @@ function Equipe() {
             <label htmlFor="category">Categoria:<input id="category" type="text" onChange={(e) => setCurrent({...current, category: e.target.value})}value={current.category}/></label>
             <label htmlFor="name">Nome:<input id="name" type="text" onChange={(e) => setCurrent({...current, name: e.target.value})}value={current.name}/></label>
             <label htmlFor="job">Função:<input id="job" type="text" onChange={(e) => setCurrent({...current, job: e.target.value})}value={current.job}/></label>
-            <label htmlFor="contact">Contato:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
+            <label htmlFor="contact">Email:<input id="contact" type="text" onChange={(e) => setCurrent({...current, contact: e.target.value})}value={current.contact}/></label>
+            <label htmlFor="contact">Celular:
+            <input type="text" placeholder="(DDD) 9xxxx-xxxx"
+            onChange={(e) => setCurrent({...current, mobile: e.target.value})} value={current.mobile}/></label>
             <label htmlFor="contact">Foto:
             <input type="text" placeholder="Inserir URL da foto"
             onChange={(e) => setCurrent({...current, image: e.target.value})} value={current.image}/></label>
