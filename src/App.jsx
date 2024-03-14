@@ -333,7 +333,7 @@ function App() {
         </div>
       </div>
 
-      <div className={currentArea.id !== '' && currentArea.view == 2 === false ? 'modal' : 'none'}>
+      {/* <div className={currentArea.id !== '' && currentArea.view == 2 === false ? 'modal' : 'none'}>
         <div className="modalBox">
           <form className="editMemberForm">
             <label htmlFor="contact">Título:
@@ -368,7 +368,7 @@ function App() {
             className={authorized ? 'adminBtn' : 'none'}>Editar</button> 
           </div>      
         </div>
-      </div>
+      </div> */}
 
       <div className={loading ? 'fullScreen' : 'none'}><div className="loader"></div></div>
 
